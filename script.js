@@ -23,23 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Simple Parallax Effect for Background Orbs based on mouse movement (optional enhancement)
-    // Disabled on mobile via CSS pointer-events or display:none for performance
-    const parallaxBg = document.getElementById('parallax-bg');
-    if (parallaxBg && window.innerWidth > 768) {
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth - e.pageX * 2) / 100;
-            const y = (window.innerHeight - e.pageY * 2) / 100;
-
-            const orbs = document.querySelectorAll('.orb');
-            orbs.forEach((orb, index) => {
-                // Different speed for different orbs
-                const speed = (index + 1) * 2; 
-                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-            });
-        });
-    }
-
     // Rotating Text Effect
     const roles = [
         "Global Youth Leader",
