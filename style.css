@@ -424,6 +424,12 @@ ul {
     border-radius: 50%;
 }
 
+.logo-item img {
+    max-width: 70%;
+    max-height: 70%;
+    object-fit: contain;
+}
+
 .logo-item:nth-child(1) {
     top: 0;
     left: 20%;
