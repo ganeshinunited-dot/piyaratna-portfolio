@@ -150,6 +150,52 @@ ul {
     background: rgba(4, 16, 36, 0.05);
 }
 
+/* Main Header */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(4, 16, 36, 0.1);
+    padding: 10px 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-social-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 1rem;
+}
+
+.header-social-icons {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.header-icon {
+    width: 35px;
+    height: 35px;
+    border-color: rgba(4, 16, 36, 0.1);
+    color: var(--navy);
+    background: transparent;
+}
+.header-icon:hover {
+    background: var(--gold);
+    color: var(--white);
+    border-color: var(--gold);
+}
+
 /* Hero Section */
 .hero {
     min-height: 100vh;
