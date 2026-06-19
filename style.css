@@ -171,26 +171,19 @@ ul {
     gap: 1rem;
 }
 
-.header-social-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 600;
-    color: var(--navy);
-    font-size: 1rem;
-}
-
 .header-social-icons {
     display: flex;
     gap: 0.8rem;
 }
 
-.header-icon {
+.main-header .social-icon {
     width: 35px;
     height: 35px;
     border-color: rgba(4, 16, 36, 0.1);
     color: var(--navy);
     background: transparent;
 }
-.header-icon:hover {
+.main-header .social-icon:hover {
     background: var(--gold);
     color: var(--white);
     border-color: var(--gold);
