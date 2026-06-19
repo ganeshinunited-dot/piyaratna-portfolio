@@ -43,4 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000); // Change text every 3 seconds
     }
 
+    // Theme Switcher Logic
+    const themeSwitchButtons = document.querySelectorAll('.switch-btn');
+    const switchPill = document.getElementById('switch-pill');
+    
+    if (themeSwitchButtons.length > 0 && switchPill) {
+        themeSwitchButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const currentTheme = btn.getAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                
+                // Move pill (30px width per button)
+                const pillOffset = index * 30; 
+                switchPill.style.transform = `translateX(${pillOffset}px)`;
+            });
+        });
+    }
+
 });

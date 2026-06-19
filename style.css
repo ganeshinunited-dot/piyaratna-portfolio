@@ -5,7 +5,7 @@
   Background: Ethereal White (#FAFAFC)
 */
 
-:root {
+:root, [data-theme="white"] {
     --navy: #041024;
     --gold: #D4AF37;
     --white: #FAFAFC;
@@ -15,9 +15,55 @@
     --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     
+    /* Contact Specifics */
+    --contact-bg: #041024;
+    --contact-text: #FAFAFC;
+    --form-border: rgba(255, 255, 255, 0.2);
+    --form-label: rgba(255, 255, 255, 0.5);
+    --footer-bg: #020813;
+
     /* Smooth Transitions */
     --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     --transition-slow: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+[data-theme="green"] {
+    --navy: #153A26; 
+    --gold: #D4AF37; 
+    --white: #E8F5E9; 
+    --text-dark: #0A1C14; 
+    --text-light: #FFFFFF;
+    --glass-bg: rgba(232, 245, 233, 0.6);
+    --glass-border: rgba(21, 58, 38, 0.1);
+    --glass-shadow: 0 20px 40px rgba(10, 28, 20, 0.05);
+    
+    --contact-bg: #0A1C14;
+    --contact-text: #E8F5E9;
+    --form-border: rgba(232, 245, 233, 0.2);
+    --form-label: rgba(232, 245, 233, 0.5);
+    --footer-bg: #050f0a;
+}
+
+[data-theme="dark"] {
+    --navy: #FAFAFC; 
+    --gold: #D4AF37;
+    --white: #0A0A0C; 
+    --text-dark: #E0E0E0; 
+    --text-light: #FAFAFC;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    
+    --contact-bg: #050506;
+    --contact-text: #FAFAFC;
+    --form-border: rgba(255, 255, 255, 0.1);
+    --form-label: rgba(255, 255, 255, 0.3);
+    --footer-bg: #020202;
+}
+
+/* Theme universal transitions for smooth color changing */
+body, .hero, .glass-card, .btn, h1, h2, h3, h4, p, a, .main-header, .image-placeholder, .contact, .footer, .form-group input, .form-group textarea, .form-group label {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* Global Reset & Typography */
@@ -163,6 +209,40 @@ ul {
     border-bottom: 1px solid rgba(4, 16, 36, 0.1);
     padding: 10px 0;
 }
+
+/* Theme Switch */
+.theme-switch {
+    position: relative;
+    display: flex;
+    width: 90px;
+    height: 30px;
+    background: rgba(4, 16, 36, 0.1);
+    border-radius: 30px;
+    align-items: center;
+    border: 1px solid var(--glass-border);
+}
+.switch-btn {
+    flex: 1;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+.switch-pill {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background: var(--navy);
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 1;
+}
+[data-theme="white"] .switch-pill { transform: translateX(0); }
+[data-theme="green"] .switch-pill { transform: translateX(30px); }
+[data-theme="dark"] .switch-pill { transform: translateX(60px); }
 
 .header-container {
     display: flex;
@@ -436,8 +516,8 @@ ul {
 
 /* Contact & Footer */
 .contact {
-    background: var(--navy);
-    color: var(--white);
+    background: var(--contact-bg);
+    color: var(--contact-text);
     position: relative;
     z-index: 2;
     margin-top: 4rem;
@@ -491,8 +571,8 @@ ul {
     padding: 10px 0;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--white);
+    border-bottom: 1px solid var(--form-border);
+    color: var(--contact-text);
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     outline: none;
@@ -503,7 +583,7 @@ ul {
     position: absolute;
     top: 10px;
     left: 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--form-label);
     pointer-events: none;
     transition: var(--transition-smooth);
 }
@@ -583,8 +663,8 @@ ul {
 }
 
 .footer {
-    background: #020813;
-    color: rgba(255, 255, 255, 0.5);
+    background: var(--footer-bg);
+    color: var(--form-label);
     text-align: center;
     padding: 2rem 0;
     font-size: 0.9rem;
