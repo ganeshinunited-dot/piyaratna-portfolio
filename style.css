@@ -15,6 +15,9 @@
     --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     
+    --header-bg: rgba(255, 255, 255, 0.8);
+    --switch-bg: rgba(4, 16, 36, 0.1);
+    
     /* Contact Specifics */
     --contact-bg: #041024;
     --contact-text: #FAFAFC;
@@ -37,6 +40,9 @@
     --glass-border: rgba(21, 58, 38, 0.1);
     --glass-shadow: 0 20px 40px rgba(10, 28, 20, 0.05);
     
+    --header-bg: rgba(232, 245, 233, 0.8);
+    --switch-bg: rgba(21, 58, 38, 0.1);
+    
     --contact-bg: #0A1C14;
     --contact-text: #E8F5E9;
     --form-border: rgba(232, 245, 233, 0.2);
@@ -53,6 +59,9 @@
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.05);
     --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    
+    --header-bg: rgba(10, 10, 12, 0.8);
+    --switch-bg: rgba(255, 255, 255, 0.1);
     
     --contact-bg: #050506;
     --contact-text: #FAFAFC;
@@ -203,10 +212,10 @@ ul {
     left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--header-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(4, 16, 36, 0.1);
+    border-bottom: 1px solid var(--glass-border);
     padding: 10px 0;
 }
 
@@ -216,7 +225,7 @@ ul {
     display: flex;
     width: 90px;
     height: 30px;
-    background: rgba(4, 16, 36, 0.1);
+    background: var(--switch-bg);
     border-radius: 30px;
     align-items: center;
     border: 1px solid var(--glass-border);
@@ -259,7 +268,7 @@ ul {
 .main-header .social-icon {
     width: 35px;
     height: 35px;
-    border-color: rgba(4, 16, 36, 0.1);
+    border-color: var(--glass-border);
     color: var(--navy);
     background: transparent;
 }
