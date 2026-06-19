@@ -191,8 +191,16 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    border: 3px solid rgba(212, 175, 55, 0.5); /* Gold frame */
+    overflow: hidden;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .hero-subtitle-container {
