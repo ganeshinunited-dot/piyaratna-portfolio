@@ -623,4 +623,21 @@ ul {
         height: 130px;
         font-size: 1.2rem;
     }
+
+    .mobile-slider {
+        display: flex !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .mobile-slider::-webkit-scrollbar {
+        display: none;
+    }
+    .mobile-slider > * {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
 }
