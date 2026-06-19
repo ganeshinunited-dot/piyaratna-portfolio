@@ -542,7 +542,7 @@ ul {
 }
 
 .contact .section-title {
-    color: var(--white);
+    color: var(--contact-text);
 }
 
 .contact-intro {
