@@ -110,7 +110,7 @@
         .btn-secondary { background: transparent; border: 1px solid var(--glass-border); color: var(--text-light); margin-left: 15px; }
         .btn-secondary:hover { background: var(--glass-bg); border-color: var(--text-light); }
 
-        /* === Header & Theme Switcher (Restored) === */
+        /* === Header & Theme Switcher === */
         .main-header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             padding: 15px 0; background: rgba(2, 6, 23, 0.5);
@@ -122,9 +122,7 @@
             position: relative; display: flex; gap: 10px;
             background: rgba(255,255,255,0.1); padding: 5px; border-radius: 20px;
         }
-        .switch-btn {
-            width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; z-index: 2;
-        }
+        .switch-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
         .switch-btn[data-theme="white"] { background: #fff; }
         .switch-btn[data-theme="green"] { background: #10b981; }
         .switch-btn[data-theme="dark"] { background: #1e293b; }
@@ -158,9 +156,7 @@
         .center .section-title::after { margin: 15px auto 0; }
         
         p { line-height: 1.8; color: var(--text-muted); margin-bottom: 20px; font-size: 1.05rem; }
-        
         .mission-block { font-style: italic; font-size: 1.2rem; border-left: 4px solid var(--accent-color); padding-left: 20px; margin: 30px 0; color: var(--text-light); }
-        
         .logo-collage { display: flex; gap: 20px; }
         .logo-item { padding: 20px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); }
         .logo-item img { max-width: 150px; height: auto; }
@@ -178,7 +174,7 @@
         .node-dot { position: absolute; left: 13px; top: 15px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
         .node-title { margin-bottom: 10px; color: var(--text-light); }
 
-        /* Polaroid (Restored from Original) */
+        /* Polaroid */
         .polaroid { background: rgba(255,255,255,0.1); padding: 15px 15px 30px; text-align: center; }
         .polaroid-image { width: 100%; height: 200px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px; }
         .polaroid-caption { font-weight: 500; color: var(--text-light); }
@@ -198,15 +194,15 @@
         .developer-credit { margin-top: 15px; font-size: 0.9rem; }
         .developer-credit a { color: var(--accent-color); font-weight: 500; }
 
-        /* General Animations */
-        .floating { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
-        .floating.visible { opacity: 1; transform: translateY(0); }
-        .slide-in { opacity: 0; transition: opacity 0.8s ease; }
-        .slide-in.visible { opacity: 1; }
+        /* === Scroll Animations === */
+        /* opacity 0 बाट सुरु हुन्छ, र JS ले 'active' क्लास थपेपछि opacity 1 हुन्छ */
+        .floating, .slide-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .floating.active, .slide-in.active { opacity: 1; transform: translateY(0); }
         .delay-1 { transition-delay: 0.2s; }
         .delay-2 { transition-delay: 0.4s; }
         .delay-3 { transition-delay: 0.6s; }
 
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .hero-title { font-size: 3rem; }
             .hero-subtitle { font-size: 1.2rem; }
@@ -241,15 +237,13 @@
         </div>
     </header>
 
-    <!-- Section 1: The Ethereal Hero -->
+    <!-- Section 1: Hero -->
     <section class="hero slide-in" id="hero">
         <div class="hero-content">
             <h1 class="hero-title floating">Dr. Piya Ratna</h1>
             
             <div class="hero-image floating delay-1" id="hero-img-container">
-                <div class="image-placeholder">
-                    <img src="profile.jpg" alt="Dr. Piya Ratna" class="profile-img">
-                </div>
+                <img src="profile.jpg" alt="Dr. Piya Ratna" class="profile-img">
             </div>
 
             <div class="hero-subtitle-container floating delay-2">
@@ -257,7 +251,7 @@
             </div>
             
             <p class="hero-intro floating delay-3">
-                "Welcome to the official portfolio of Dr. Piya Ratna. Dedicated to transforming societies through actionable youth empowerment, global peace initiatives, and sustainable socio-economic development. Join the movement towards a harmonious and productive global community."
+                "Welcome to the official portfolio of Dr. Piya Ratna. Dedicated to transforming societies through actionable youth empowerment, global peace initiatives, and sustainable socio-economic development."
             </p>
             <div class="hero-cta floating delay-3">
                 <a href="#about" class="btn btn-primary">Discover My Work</a>
@@ -272,7 +266,7 @@
             <div class="about-text floating">
                 <h2 class="section-title">Meet Dr. Piya Ratna: A Visionary Leader</h2>
                 <p>
-                    Dr. Piya Ratna is a distinguished global social worker, an influential youth leader, and a dedicated peace ambassador hailing from Kathmandu, Nepal. With a profound commitment to uplifting communities and bridging cultural divides, he has dedicated his life to the pursuit of global peace, interfaith harmony, and socio-economic empowerment. His dynamic approach to leadership blends grassroots activism with high-level international diplomacy. Believing firmly that the youth are not just the leaders of tomorrow but the changemakers of today, Dr. Ratna has spearheaded numerous initiatives aimed at youth mobilization and leadership training across the globe.
+                    Dr. Piya Ratna is a distinguished global social worker, an influential youth leader, and a dedicated peace ambassador hailing from Kathmandu, Nepal. With a profound commitment to uplifting communities and bridging cultural divides, he has dedicated his life to the pursuit of global peace, interfaith harmony, and socio-economic empowerment.
                 </p>
                 <blockquote class="mission-block glass-card">
                     "To empower the next generation of leaders, champion sustainable peace through intercultural and interfaith dialogue, and drive socio-economic productivity on a global scale."
@@ -281,7 +275,7 @@
             <div class="about-logos floating delay-1">
                 <div class="logo-collage">
                     <div class="logo-item glass-card">
-                        <img src="https://iysglobal.org/wp-content/uploads/2020/01/logo.png" alt="IYS" onerror="this.outerHTML='<span>IYS</span>'">
+                        <img src="https://iysglobal.org/wp-content/uploads/2020/01/logo.png" alt="IYS">
                     </div>
                     <div class="logo-item glass-card delay-1">
                         <img src="https://epccglobal.org/wp-content/uploads/2023/11/epcclogo.jpg" alt="EPCC Global">
@@ -291,25 +285,26 @@
         </div>
     </section>
 
-    <!-- Section 3: Track Nepal Leadership -->
+    <!-- Section 3: Track Nepal -->
     <section class="track-nepal section-padding slide-in" id="track-nepal">
         <div class="container">
             <div class="track-nepal-card glass-card floating delay-1">
                 <div class="split-layout">
                     <div class="track-nepal-image-wrapper">
-                        <img src="http://tracknepal.org.np/wp-content/uploads/2021/09/Piya-Ratna-maharjan.jpg" alt="Dr. Piya Ratna Maharjan - President of Track Nepal" class="track-nepal-image">
+                        <img src="http://tracknepal.org.np/wp-content/uploads/2021/09/Piya-Ratna-maharjan.jpg" alt="President Track Nepal" class="track-nepal-image">
                         <div class="badge-overlay">President, Track Nepal</div>
                     </div>
                     <div class="track-nepal-content">
                         <h2 class="section-title">Leading with Vision at Track Nepal</h2>
                         <h3 class="track-subtitle">Non-profit Making Social Association Benevolent to Public</h3>
-                        <p class="track-desc">
-                            As the President of <strong>Track Nepal</strong>, Dr. Piya Ratna Maharjan leads a dedicated board of directors in championing community service, international volunteer service, and sustainable development. 
+                        <p>
+                            As the President of <strong>Track Nepal</strong>, Dr. Piya Ratna Maharjan leads a dedicated board of directors in championing community service, international volunteer service, and sustainable development.
                         </p>
-                        <p class="track-desc">
-                            Under his visionary leadership, Track Nepal spearheads critical initiatives including the economic empowerment of rural women, children development programs, public health and sanitation drives, and extensive COVID-19 community service projects.
+                        <p>
+                            Under his visionary leadership, Track Nepal spearheads critical initiatives including the economic empowerment of rural women, children development programs, and public health drives.
                         </p>
-                        <a href="https://tracknepal.org.np/" target="_blank" rel="noopener noreferrer" class="btn btn-primary track-btn">Visit Track Nepal</a>
+                        <br>
+                        <a href="https://tracknepal.org.np/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit Track Nepal</a>
                     </div>
                 </div>
             </div>
@@ -322,6 +317,16 @@
             <h2 class="section-title center">Pillars of Leadership</h2>
             <div class="grid-3">
                 <div class="glass-card floating">
-                    <h3 class="card-title" style="color: var(--accent-color);">Global President <span class="card-subtitle" style="font-size: 0.9rem; color: var(--text-muted);">(Nepal Chapter)</span></h3>
-                    <h4 class="card-entity" style="margin-bottom: 15px; color: #fff;">International Youth Society (IYS)</h4>
-                    <p class="card-text">Leading the Nepal chapter of a globally recognized yo
+                    <h3 style="color: var(--accent-color);">Global President <span style="font-size: 0.9rem; color: var(--text-muted);">(Nepal Chapter)</span></h3>
+                    <h4 style="margin-bottom: 15px; color: #fff;">International Youth Society (IYS)</h4>
+                    <p>Leading the Nepal chapter of a globally recognized youth network. Responsible for mobilizing young professionals and cross-cultural dialogue.</p>
+                </div>
+                <div class="glass-card floating delay-1">
+                    <h3 style="color: var(--accent-color);">Director</h3>
+                    <h4 style="margin-bottom: 15px; color: #fff;">Explore Productive Chamber of Commerce</h4>
+                    <p>Driving cross-border business relations and economic networking. Focused on expanding commercial opportunities.</p>
+                </div>
+                <div class="glass-card floating delay-2">
+                    <h3 style="color: var(--accent-color);">President</h3>
+                    <h4 style="margin-bottom: 15px; color: #fff;">Track Nepal</h4>
+                    <p>Spearheading na
