@@ -9,200 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <style>
-        /* === Liquid Water Background & Glass Theme Variables === */
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            --text-light: #f8fafc;
-            --text-muted: #cbd5e1;
-            --accent-color: #38bdf8;
-            --bg-color: #0f172a;
-        }
-
-        /* Theme variables */
-        [data-theme="white"] { --bg-color: #f1f5f9; --text-light: #0f172a; --text-muted: #334155; --accent-color: #0284c7; --glass-bg: rgba(0, 0, 0, 0.05); --glass-border: rgba(0, 0, 0, 0.1); }
-        [data-theme="green"] { --bg-color: #064e3b; --accent-color: #34d399; }
-        [data-theme="dark"] { --bg-color: #0f172a; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-light);
-            background: linear-gradient(-45deg, var(--bg-color), #082f49, #172554, #020617);
-            background-size: 400% 400%;
-            animation: liquidBackground 15s ease infinite;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        @keyframes liquidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; }
-        a { text-decoration: none; color: inherit; }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .section-padding { padding: 100px 0; }
-        .center { text-align: center; }
-
-        /* Background Liquid Blobs */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            animation: float 10s infinite ease-in-out alternate;
-        }
-        body::before {
-            width: 400px; height: 400px;
-            background: rgba(56, 189, 248, 0.3);
-            top: -100px; left: -100px;
-        }
-        body::after {
-            width: 500px; height: 500px;
-            background: rgba(139, 92, 246, 0.2);
-            bottom: -200px; right: -100px;
-            animation-delay: -5s;
-        }
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(50px) scale(1.1); }
-        }
-
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.2);
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            border-radius: 30px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-        }
-        .btn-primary { background: rgba(56, 189, 248, 0.2); border: 1px solid var(--accent-color); color: var(--accent-color); }
-        .btn-primary:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
-        .btn-secondary { background: transparent; border: 1px solid var(--glass-border); color: var(--text-light); margin-left: 15px; }
-        .btn-secondary:hover { background: var(--glass-bg); border-color: var(--text-light); }
-
-        /* Header */
-        .main-header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 15px 0; background: rgba(2, 6, 23, 0.5);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);
-        }
-        .header-container { display: flex; justify-content: space-between; align-items: center; }
-        
-        .theme-switch {
-            position: relative; display: flex; gap: 10px;
-            background: rgba(255,255,255,0.1); padding: 5px; border-radius: 20px;
-        }
-        .switch-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
-        .switch-btn[data-theme="white"] { background: #fff; }
-        .switch-btn[data-theme="green"] { background: #10b981; }
-        .switch-btn[data-theme="dark"] { background: #1e293b; }
-        .switch-pill {
-            position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
-            border-radius: 50%; border: 2px solid var(--accent-color);
-            transition: transform 0.3s ease; z-index: 1; pointer-events: none;
-        }
-
-        .header-social-icons { display: flex; gap: 20px; }
-        .social-icon { color: var(--text-muted); transition: color 0.3s ease, transform 0.3s ease; }
-        .social-icon:hover { color: var(--accent-color); transform: scale(1.2); }
-
-        /* Hero Section */
-        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
-        .hero-title { font-size: 5rem; background: linear-gradient(to right, #fff, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        .hero-subtitle-container { height: 40px; margin-bottom: 20px; overflow: hidden; }
-        .hero-subtitle { font-size: 1.8rem; color: var(--accent-color); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; display: inline-block; will-change: transform, opacity;}
-        .hero-intro { font-size: 1.1rem; max-width: 700px; margin: 0 auto 40px; color: var(--text-muted); line-height: 1.8; }
-        .hero-image { margin-bottom: 30px; }
-        .profile-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); transition: transform 0.5s ease; }
-        .profile-img:hover { transform: scale(1.05); }
-
-        /* Layouts */
-        .split-layout { display: flex; gap: 50px; align-items: center; }
-        .split-layout > div { flex: 1; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
-        
-        .section-title { font-size: 2.8rem; margin-bottom: 30px; position: relative; }
-        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent-color); margin-top: 15px; border-radius: 2px; }
-        .center .section-title::after { margin: 15px auto 0; }
-        
-        p { line-height: 1.8; color: var(--text-muted); margin-bottom: 20px; font-size: 1.05rem; }
-        .mission-block { font-style: italic; font-size: 1.2rem; border-left: 4px solid var(--accent-color); padding-left: 20px; margin: 30px 0; color: var(--text-light); }
-        .logo-collage { display: flex; gap: 20px; }
-        .logo-item { padding: 20px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.8); border-radius: 10px;}
-        .logo-item img { max-width: 150px; height: auto; }
-
-        /* Track Nepal */
-        .track-nepal-image { width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .track-nepal-image-wrapper { position: relative; }
-        .badge-overlay { position: absolute; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.2); }
-        .track-subtitle { font-family: 'Inter', sans-serif; font-weight: 400; color: var(--text-light); margin-bottom: 15px; }
-
-        /* Timeline */
-        .timeline { position: relative; max-width: 800px; margin: 50px auto 0; }
-        .timeline-line { position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.1); }
-        .timeline-node { position: relative; padding-left: 60px; margin-bottom: 40px; }
-        .node-dot { position: absolute; left: 13px; top: 15px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
-        .node-title { margin-bottom: 10px; color: var(--text-light); }
-
-        /* Polaroid */
-        .polaroid { background: rgba(255,255,255,0.1); padding: 15px 15px 30px; text-align: center; }
-        .polaroid-image { width: 100%; height: 200px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px; }
-        .polaroid-caption { font-weight: 500; color: var(--text-light); }
-
-        /* Form */
-        .form-group { position: relative; margin-bottom: 30px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fff; font-family: inherit; outline: none; transition: all 0.3s ease; }
-        .form-group label { position: absolute; left: 15px; top: 15px; color: var(--text-muted); transition: all 0.3s ease; pointer-events: none; }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-color); background: rgba(255, 255, 255, 0.1); }
-        .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
-        .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label { top: -10px; left: 10px; font-size: 0.8rem; background: var(--bg-color); padding: 0 5px; color: var(--accent-color); border-radius: 4px; }
-
-        /* Footer */
-        .footer { border-top: 1px solid var(--glass-border); padding: 40px 0; text-align: center; margin-top: 50px; background: rgba(0,0,0,0.2); }
-        .footer-links a { margin: 0 10px; color: var(--text-muted); }
-        .footer-links a:hover { color: var(--accent-color); }
-        .developer-credit { margin-top: 15px; font-size: 0.9rem; }
-        .developer-credit a { color: var(--accent-color); font-weight: 500; }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .hero-title { font-size: 3rem; }
-            .hero-subtitle { font-size: 1.2rem; }
-            .split-layout { flex-direction: column; }
-            .section-title { font-size: 2rem; }
-            .btn-secondary { margin-left: 0; margin-top: 15px; display: block; width: fit-content; margin: 15px auto 0;}
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -336,4 +143,86 @@
                     </div>
                 </div>
 
-                <div class="ti
+                <div class="timeline-node">
+                    <div class="node-dot"></div>
+                    <div class="glass-card">
+                        <h3 class="node-title">Ultimate Global Peace Campaign</h3>
+                        <p>Represented Nepal on the global stage, delivering impactful insights on youth peace projects.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-node">
+                    <div class="node-dot"></div>
+                    <div class="glass-card">
+                        <h3 class="node-title">Interfaith Unity Initiatives</h3>
+                        <p>Served as a core program coordinator for major interfaith summits through the Universal Peace Federation (UPF).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="conferences section-padding" id="conferences">
+        <div class="container">
+            <h2 class="section-title center">Academic & Global Footprint</h2>
+            <div class="grid-3">
+                <div class="glass-card polaroid">
+                    <div class="polaroid-image"></div>
+                    <div class="polaroid-caption">World Multidisciplinary Conference on Recent Trends (2024), Nashik, India</div>
+                </div>
+                <div class="glass-card polaroid">
+                    <div class="polaroid-image"></div>
+                    <div class="polaroid-caption">Seed NanoTech International Conferences</div>
+                </div>
+                <div class="glass-card polaroid">
+                    <div class="polaroid-image"></div>
+                    <div class="polaroid-caption">Keynote Collaborator & Global Organizer</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact section-padding" id="contact">
+        <div class="container" style="max-width: 800px;">
+            <div class="center">
+                <h2 class="section-title center">Collaborate for Change</h2>
+                <p>"Whether you are looking to collaborate on an international youth project or invite Dr. Ratna for a speaking engagement, feel free to reach out."</p>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <form class="glass-card">
+                    <div class="form-group">
+                        <input type="text" id="name" required placeholder=" ">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" required placeholder=" ">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="organization" required placeholder=" ">
+                        <label for="organization">Organization</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" rows="4" required placeholder=" "></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links" style="margin-bottom: 15px;">
+                <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-conditions.html">Terms and Conditions</a>
+            </div>
+            <p>&copy; 2024 Dr. Piya Ratna. All rights reserved.</p>
+            <p class="developer-credit">Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer">Ganesh Karki</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
