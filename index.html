@@ -8,76 +8,453 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* === Liquid Water Background & Glass Theme Variables === */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --text-light: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent-color: #38bdf8; /* Water Blue Accent */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Liquid Animated Background */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            background: linear-gradient(-45deg, #020617, #0f172a, #082f49, #172554);
+            background-size: 400% 400%;
+            animation: liquidBackground 15s ease infinite;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes liquidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Abstract Liquid Blobs for Glass Effect */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 {
+            width: 400px; height: 400px;
+            background: rgba(56, 189, 248, 0.3);
+            top: -100px; left: -100px;
+        }
+        .blob-2 {
+            width: 500px; height: 500px;
+            background: rgba(139, 92, 246, 0.2);
+            bottom: -200px; right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(50px) scale(1.1); }
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding { padding: 100px 0; }
+        .center { text-align: center; }
+
+        /* === Glassmorphism Components === */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        .btn-primary {
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        .btn-primary:hover {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            margin-left: 15px;
+        }
+        .btn-secondary:hover {
+            background: var(--glass-bg);
+            border-color: var(--text-light);
+        }
+
+        /* === Header === */
+        .main-header {
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(2, 6, 23, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-social-icons { display: flex; gap: 20px; }
+        .social-icon {
+            color: var(--text-muted);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icon:hover {
+            color: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        /* === Hero Section === */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        .hero-title {
+            font-size: 5rem;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .hero-intro {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
+        }
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* === Layouts === */
+        .split-layout {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+        .split-layout > div { flex: 1; }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        /* === Typography & Sections === */
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            margin-top: 15px;
+            border-radius: 2px;
+        }
+        .center .section-title::after { margin: 15px auto 0; }
+        
+        p {
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .mission-block {
+            font-style: italic;
+            font-size: 1.2rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 20px;
+            margin: 30px 0;
+            color: var(--text-light);
+        }
+
+        .logo-collage {
+            display: flex;
+            gap: 20px;
+        }
+        .logo-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Track Nepal Image */
+        .track-nepal-image {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .badge-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .track-nepal-image-wrapper { position: relative; }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto 0;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .timeline-node {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 40px;
+        }
+        .node-dot {
+            position: absolute;
+            left: 13px;
+            top: 15px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+        .node-title { margin-bottom: 10px; color: var(--text-light); }
+
+        /* Form */
+        .form-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-group label {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
+        .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 0.8rem;
+            background: #0f172a;
+            padding: 0 5px;
+            color: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 50px;
+            background: rgba(0,0,0,0.2);
+        }
+        .footer-links a {
+            margin: 0 10px;
+            color: var(--text-muted);
+        }
+        .footer-links a:hover { color: var(--accent-color); }
+        .developer-credit { margin-top: 15px; font-size: 0.9rem; }
+        .developer-credit a { color: var(--accent-color); font-weight: 500; }
+
+        /* === Scroll Animations === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+
+        /* === Mobile Responsive === */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .split-layout { flex-direction: column; }
+            .section-title { font-size: 2rem; }
+            .glass-card { padding: 25px; }
+            .btn-secondary { margin-left: 0; margin-top: 15px; display: block; width: fit-content; margin: 15px auto 0;}
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Background Liquid Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
     <!-- Main Header -->
     <header class="main-header">
         <div class="container header-container">
-            <div class="theme-switch" id="theme-switch">
-                <div class="switch-pill" id="switch-pill"></div>
-                <button class="switch-btn" data-theme="white" aria-label="White Theme"></button>
-                <button class="switch-btn" data-theme="green" aria-label="Green Theme"></button>
-                <button class="switch-btn" data-theme="dark" aria-label="Dark Theme"></button>
-            </div>
+            <div style="font-weight: 600; font-family: 'Playfair Display', serif; letter-spacing: 1px;">DR. PIYA RATNA</div>
             <div class="header-social-icons">
-                <a href="https://www.facebook.com/piya.ratna.7/" target="_blank" rel="noopener noreferrer" class="social-icon header-icon" aria-label="Facebook">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                <a href="https://www.facebook.com/piya.ratna.7/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon header-icon" aria-label="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon header-icon" aria-label="Twitter">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
                 </a>
             </div>
         </div>
     </header>
 
     <!-- Section 1: The Ethereal Hero -->
-    <section class="hero slide-in" id="hero">
-        <div class="hero-content">
-            <h1 class="hero-title floating">Dr. Piya Ratna</h1>
-            
-            <div class="hero-image delay-1" id="hero-img-container">
-                <div class="image-placeholder">
-                    <img src="profile.jpg" alt="Dr. Piya Ratna" class="profile-img">
+    <section class="hero reveal" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="profile.jpg" alt="Dr. Piya Ratna" class="profile-img">
+                <h1 class="hero-title">Dr. Piya Ratna</h1>
+                <h2 class="hero-subtitle">Global Youth Leader</h2>
+                
+                <p class="hero-intro">
+                    "Welcome to the official portfolio of Dr. Piya Ratna. Dedicated to transforming societies through actionable youth empowerment, global peace initiatives, and sustainable socio-economic development. Join the movement towards a harmonious and productive global community."
+                </p>
+                <div class="hero-cta">
+                    <a href="#about" class="btn btn-primary">Discover My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
                 </div>
-            </div>
-
-            <div class="hero-subtitle-container floating delay-2">
-                <h2 class="hero-subtitle" id="rotating-text">Global Youth Leader</h2>
-            </div>
-            
-            <p class="hero-intro floating delay-3">
-                "Welcome to the official portfolio of Dr. Piya Ratna. Dedicated to transforming societies through actionable youth empowerment, global peace initiatives, and sustainable socio-economic development. Join the movement towards a harmonious and productive global community."
-            </p>
-            <div class="hero-cta floating delay-3">
-                <a href="#about" class="btn btn-primary">Discover My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
             </div>
         </div>
     </section>
 
     <!-- Section 2: Biography -->
-    <section class="about section-padding slide-in" id="about">
+    <section class="about section-padding reveal" id="about">
         <div class="container split-layout">
-            <div class="about-text floating">
+            <div class="about-text">
                 <h2 class="section-title">Meet Dr. Piya Ratna: A Visionary Leader</h2>
                 <p>
                     Dr. Piya Ratna is a distinguished global social worker, an influential youth leader, and a dedicated peace ambassador hailing from Kathmandu, Nepal. With a profound commitment to uplifting communities and bridging cultural divides, he has dedicated his life to the pursuit of global peace, interfaith harmony, and socio-economic empowerment. His dynamic approach to leadership blends grassroots activism with high-level international diplomacy. Believing firmly that the youth are not just the leaders of tomorrow but the changemakers of today, Dr. Ratna has spearheaded numerous initiatives aimed at youth mobilization and leadership training across the globe.
                 </p>
-                <blockquote class="mission-block">
+                <blockquote class="mission-block glass-card">
                     "To empower the next generation of leaders, champion sustainable peace through intercultural and interfaith dialogue, and drive socio-economic productivity on a global scale."
                 </blockquote>
             </div>
-            <div class="about-logos floating delay-1">
+            <div class="about-logos reveal delay-1">
                 <div class="logo-collage">
-                    <div class="logo-item glass-card">
-                        <img src="https://iysglobal.org/wp-content/uploads/2020/01/logo.png" alt="IYS" onerror="this.outerHTML='<span>IYS</span>'">
+                    <div class="logo-item glass-card" style="padding: 20px;">
+                        <img src="https://iysglobal.org/wp-content/uploads/2020/01/logo.png" alt="IYS" onerror="this.outerHTML='<span style=\'color:white; font-weight:bold;\'>IYS</span>'">
                     </div>
-                    <div class="logo-item glass-card delay-1">
+                    <div class="logo-item glass-card" style="padding: 20px;">
                         <img src="https://epccglobal.org/wp-content/uploads/2023/11/epcclogo.jpg" alt="EPCC Global">
                     </div>
                 </div>
@@ -86,24 +463,25 @@
     </section>
 
     <!-- Section 3: Track Nepal Leadership -->
-    <section class="track-nepal section-padding slide-in" id="track-nepal">
+    <section class="track-nepal section-padding reveal" id="track-nepal">
         <div class="container">
-            <div class="track-nepal-card glass-card floating delay-1">
+            <div class="track-nepal-card glass-card">
                 <div class="split-layout">
                     <div class="track-nepal-image-wrapper">
                         <img src="http://tracknepal.org.np/wp-content/uploads/2021/09/Piya-Ratna-maharjan.jpg" alt="Dr. Piya Ratna Maharjan - President of Track Nepal" class="track-nepal-image">
                         <div class="badge-overlay">President, Track Nepal</div>
                     </div>
                     <div class="track-nepal-content">
-                        <h2 class="section-title">Leading with Vision at Track Nepal</h2>
-                        <h3 class="track-subtitle">Non-profit Making Social Association Benevolent to Public</h3>
-                        <p class="track-desc">
+                        <h2 class="section-title" style="margin-top: 0;">Leading with Vision at Track Nepal</h2>
+                        <h3 style="color: var(--text-light); margin-bottom: 15px; font-family: 'Inter', sans-serif; font-weight: 400;">Non-profit Making Social Association Benevolent to Public</h3>
+                        <p>
                             As the President of <strong>Track Nepal</strong>, Dr. Piya Ratna Maharjan leads a dedicated board of directors in championing community service, international volunteer service, and sustainable development. 
                         </p>
-                        <p class="track-desc">
+                        <p>
                             Under his visionary leadership, Track Nepal spearheads critical initiatives including the economic empowerment of rural women, children development programs, public health and sanitation drives, and extensive COVID-19 community service projects.
                         </p>
-                        <a href="https://tracknepal.org.np/" target="_blank" rel="noopener noreferrer" class="btn btn-primary track-btn">Visit Track Nepal</a>
+                        <br>
+                        <a href="https://tracknepal.org.np/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit Track Nepal</a>
                     </div>
                 </div>
             </div>
@@ -111,133 +489,11 @@
     </section>
 
     <!-- Section 4: Pillars of Leadership -->
-    <section class="experience section-padding slide-in" id="experience">
+    <section class="experience section-padding reveal" id="experience">
         <div class="container">
             <h2 class="section-title center">Pillars of Leadership</h2>
             <div class="grid-3">
-                <div class="glass-card floating">
-                    <h3 class="card-title">Global President <span class="card-subtitle">(Nepal Chapter)</span></h3>
-                    <h4 class="card-entity">International Youth Society (IYS)</h4>
-                    <p class="card-text">Leading the Nepal chapter of a globally recognized youth network. Responsible for mobilizing young professionals, facilitating international cross-cultural dialogue, and implementing community-driven development projects aligned with global sustainability goals.</p>
-                </div>
-                <div class="glass-card floating delay-1">
-                    <h3 class="card-title">Director</h3>
-                    <h4 class="card-entity">Explore Productive Chamber of Commerce (EPCC Global)</h4>
-                    <p class="card-text">Driving cross-border business relations and economic networking. Focused on expanding commercial opportunities, promoting socio-economic productivity, and bridging the gap between civic engagement and tangible economic empowerment.</p>
-                </div>
-                <div class="glass-card floating delay-2">
-                    <h3 class="card-title">President</h3>
-                    <h4 class="card-entity">Track Nepal</h4>
-                    <p class="card-text">Spearheading national civic initiatives and socio-political engagement. Organizing critical public forums, advocating for social cohesion, and engaging in structural policymaking dialogue to enhance local governance.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 4: The Peace Timeline -->
-    <section class="advocacy section-padding slide-in" id="advocacy">
-        <div class="container">
-            <h2 class="section-title center">The Peace Timeline</h2>
-            <div class="timeline">
-                <div class="timeline-line"></div>
-                
-                <div class="timeline-node floating">
-                    <div class="node-dot"></div>
-                    <div class="node-content glass-card">
-                        <h3 class="node-title">Pioneering Peace Journalism</h3>
-                        <p class="node-text">Co-organized the historic 1st Nepal Media Forum for Peace Journalism in Kathmandu, in collaboration with Heavenly Culture, World Peace, Restoration of Light (HWPL).</p>
-                    </div>
-                </div>
-
-                <div class="timeline-node floating delay-1">
-                    <div class="node-dot"></div>
-                    <div class="node-content glass-card">
-                        <h3 class="node-title">Ultimate Global Peace Campaign</h3>
-                        <p class="node-text">Represented Nepal on the global stage, delivering impactful insights on youth peace projects and utilizing the younger generation as the primary catalyst for sustainable conflict resolution.</p>
-                    </div>
-                </div>
-
-                <div class="timeline-node floating delay-2">
-                    <div class="node-dot"></div>
-                    <div class="node-content glass-card">
-                        <h3 class="node-title">Interfaith Unity Initiatives</h3>
-                        <p class="node-text">Served as a core program coordinator for major interfaith summits through the Universal Peace Federation (UPF), championing mutual respect and shared spiritual values.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 5: Academic & Global Footprint -->
-    <section class="conferences section-padding slide-in" id="conferences">
-        <div class="container">
-            <h2 class="section-title center">Academic & Global Footprint</h2>
-            <div class="grid-3 mobile-slider">
-                <div class="glass-card polaroid floating">
-                    <div class="polaroid-image"></div>
-                    <div class="polaroid-caption">World Multidisciplinary Conference on Recent Trends in Environmental Science and Management (2024), Nashik, India</div>
-                </div>
-                <div class="glass-card polaroid floating delay-1">
-                    <div class="polaroid-image"></div>
-                    <div class="polaroid-caption">Seed NanoTech International Conferences</div>
-                </div>
-                <div class="glass-card polaroid floating delay-2">
-                    <div class="polaroid-image"></div>
-                    <div class="polaroid-caption">Keynote Collaborator & Global Organizer</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 6: Contact & Connectivity -->
-    <section class="contact section-padding slide-in" id="contact">
-        <div class="container contact-container">
-            <div class="contact-header floating">
-                <h2 class="section-title center">Collaborate for Change</h2>
-                <p class="center contact-intro">"Whether you are looking to collaborate on an international youth project, invite Dr. Ratna for a speaking engagement, or discuss peacebuilding initiatives, feel free to reach out."</p>
-            </div>
-            
-            <div class="contact-layout">
-                <div class="contact-form-wrapper floating delay-1">
-                    <form class="glass-card minimal-form">
-                        <div class="form-group">
-                            <input type="text" id="name" required placeholder=" ">
-                            <label for="name">Name</label>
-                            <span class="focus-border"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" required placeholder=" ">
-                            <label for="email">Email</label>
-                            <span class="focus-border"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="organization" required placeholder=" ">
-                            <label for="organization">Organization</label>
-                            <span class="focus-border"></span>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" rows="4" required placeholder=" "></textarea>
-                            <label for="message">Message</label>
-                            <span class="focus-border"></span>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-links">
-                <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-                <a href="terms-conditions.html" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
-            </div>
-            <p>&copy; 2024 Dr. Piya Ratna. All rights reserved.</p>
-            <p class="developer-credit">Designed & Developed by <a href="#" target="_blank" rel="noopener noreferrer">Ganesh Karki</a></p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <div class="glass-card reveal">
+                    <h3 style="color: var(--accent-color); margin-bottom: 5px;">Global President <span style="font-size: 0.9rem; color: var(--text-muted);">(Nepal Chapter)</span></h3>
+                    <h4 style="margin-bottom: 15px; color: #fff;">International Youth Society (IYS)</h4>
+                    <p style="font-size: 0.95rem;">Leading the Nepal chapter of a globally recognized youth network. Responsible for mobilizing young professionals, faci
