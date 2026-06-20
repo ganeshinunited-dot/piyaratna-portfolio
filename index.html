@@ -10,22 +10,77 @@
     
     <style>
         :root {
-            --bg: #0a0a0c; /* Deep rich black */
-            --text: #f4f4f5; /* Off-white for readability */
-            --muted: #a1a1aa; /* Subtle gray */
-            --border: rgba(255, 255, 255, 0.1); /* Very thin elegant borders */
+            /* Default: Dark Theme */
+            --bg: #0a0a0c; 
+            --text: #f4f4f5; 
+            --muted: #a1a1aa; 
+            --border: rgba(255, 255, 255, 0.1); 
             --accent: #ffffff;
+            --overlay-color: rgba(10, 10, 12, 0.85); /* फोटोमाथिको डार्क ओभरले */
+        }
+
+        /* White Theme Variables */
+        [data-theme="white"] { 
+            --bg: #f4f4f5; 
+            --text: #0a0a0c; 
+            --muted: #52525b; 
+            --border: rgba(0, 0, 0, 0.1); 
+            --accent: #0284c7; 
+            --overlay-color: rgba(244, 244, 245, 0.9); /* फोटोमाथिको वाइट ओभरले */
+        }
+
+        /* Green Theme Variables */
+        [data-theme="green"] { 
+            --bg: #064e3b; 
+            --text: #ecfdf5; 
+            --muted: #a7f3d0; 
+            --border: rgba(255, 255, 255, 0.1); 
+            --accent: #34d399; 
+            --overlay-color: rgba(6, 78, 59, 0.85); /* फोटोमाथिको ग्रीन ओभरले */
+        }
+
+        /* Dark Theme Explicit Variables */
+        [data-theme="dark"] { 
+            --bg: #0a0a0c; 
+            --text: #f4f4f5; 
+            --muted: #a1a1aa; 
+            --border: rgba(255, 255, 255, 0.1); 
+            --accent: #ffffff;
+            --overlay-color: rgba(10, 10, 12, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
+        /* ==================== PHOTO BACKGROUND (8839.jpg) ==================== */
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            
+            /* फोटो ब्याकग्राउन्ड सेटिङ */
+            background-image: url('8839.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* फोटो स्थिर रहन्छ, कन्टेन्ट स्क्रोल हुन्छ */
+            background-repeat: no-repeat;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* फोटोमाथिको ओभरले - टेक्स्ट पढ्न सजिलो बनाउन */
+        body::before {
+            content: '';
+            position: fixed; /* ब्याकग्राउन्ड जस्तै स्थिर */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-color); /* थिम अनुसार परिवर्तन हुन्छ */
+            z-index: -1; /* कन्टेन्ट भन्दा पछाडि */
+            transition: background-color 0.4s ease;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -53,26 +108,59 @@
         /* Navbar */
         .navbar {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            padding: 25px 40px;
-            background: rgba(10, 10, 12, 0.8);
+            padding: 20px 40px;
+            background: rgba(10, 10, 12, 0.5); /* थोरै ट्रान्सपरेन्ट */
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
+            transition: background 0.4s ease;
         }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; }
-        .brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; }
+        /* वाइट मोडमा नभबारको ब्याकग्राउन्ड सेतो बनाउन */
+        [data-theme="white"] .navbar { background: rgba(244, 244, 245, 0.5); }
+        [data-theme="green"] .navbar { background: rgba(6, 78, 59, 0.5); }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1300px; margin: 0 auto; gap: 30px;}
+        .brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; flex-shrink: 0;}
+        
+        .navbar-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-link { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; color: var(--muted); }
         .nav-link:hover { color: var(--accent); }
 
+        /* ==================== THEME TOGGLE STYLES ==================== */
+        .theme-switch {
+            position: relative; display: flex; gap: 10px;
+            background: rgba(255,255,255,0.15); padding: 5px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+        [data-theme="white"] .theme-switch { background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); }
+
+        .switch-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
+        .switch-btn[data-theme="white"] { background: #fff; border: 1px solid #ccc; }
+        .switch-btn[data-theme="green"] { background: #10b981; }
+        .switch-btn[data-theme="dark"] { background: #1e293b; }
+        
+        .switch-pill {
+            position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
+            border-radius: 50%; border: 2px solid var(--accent);
+            transition: transform 0.3s ease; z-index: 1; pointer-events: none;
+            box-shadow: 0 0 10px var(--accent);
+            transform: translateX(60px); /* Default to Dark (3rd button) */
+        }
+        /* पिलको पोजिसन मिलाउन */
+        .switch-pill-white { transform: translateX(0px); }
+        .switch-pill-green { transform: translateX(30px); }
+        .switch-pill-dark { transform: translateX(60px); }
+
         /* Hero Section */
-        .hero { padding-top: 150px; padding-bottom: 100px; }
+        .hero { padding-top: 150px; padding-bottom: 100px; min-height: 90vh; display: flex; align-items: center;}
         .hero-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
         .hero-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
         .availability { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; border: 1px solid var(--border); padding: 8px 16px; border-radius: 50px; }
         .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
 
         .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 40px; }
-        .hero-img-box { width: 100%; aspect-ratio: 4/5; overflow: hidden; background: #1a1a1a; }
+        .hero-img-box { width: 100%; aspect-ratio: 4/5; overflow: hidden; background: #1a1a1a; border: 1px solid var(--border); }
         .hero-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: transform 0.7s ease; }
         .hero-img-box:hover .hero-img { transform: scale(1.05); filter: grayscale(0%); }
 
@@ -83,29 +171,31 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
 
         /* Buttons */
-        .primary-btn { display: inline-block; padding: 18px 40px; background: var(--text); color: var(--bg); font-weight: 500; border-radius: 50px; transition: all 0.3s ease; }
-        .primary-btn:hover { background: var(--muted); transform: translateY(-3px); }
+        .primary-btn { display: inline-block; padding: 18px 40px; background: var(--accent); color: var(--bg); font-weight: 500; border-radius: 50px; transition: all 0.3s ease; border: 1px solid var(--accent);}
+        .primary-btn:hover { background: transparent; color: var(--accent); transform: translateY(-3px); }
         .outline-btn { display: inline-block; padding: 15px 35px; border: 1px solid var(--border); border-radius: 50px; transition: all 0.3s ease; }
-        .outline-btn:hover { border-color: var(--text); background: rgba(255,255,255,0.05); }
+        .outline-btn:hover { border-color: var(--accent); background: rgba(255,255,255,0.05); }
 
         /* Lists (Pillars) */
-        .list-item { display: flex; justify-content: space-between; padding: 40px 0; transition: padding 0.3s ease; cursor: default; }
+        .list-item { display: flex; justify-content: space-between; padding: 40px 0; transition: padding 0.3s ease, background 0.3s ease; cursor: default; }
         .list-item:hover { padding-left: 20px; padding-right: 20px; background: rgba(255,255,255,0.02); }
+        [data-theme="white"] .list-item:hover { background: rgba(0,0,0,0.02); }
+
         .list-left { display: flex; gap: 30px; align-items: center; }
         .list-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--muted); }
-        .list-name { font-size: 2rem; font-weight: 400; }
+        .list-name { font-size: 2rem; font-weight: 400; color: var(--text);}
 
         /* Forms */
         .minimal-form { display: flex; flex-direction: column; gap: 30px; }
         .form-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border); padding: 15px 0; color: var(--text); font-size: 1.2rem; font-family: inherit; outline: none; transition: border-color 0.3s; }
-        .form-input:focus { border-bottom-color: var(--text); }
+        .form-input:focus { border-bottom-color: var(--accent); }
         .submit-btn { border: none; cursor: pointer; margin-top: 20px; width: fit-content; }
 
         /* Footer */
-        .footer-flex { display: flex; justify-content: space-between; align-items: center; padding-bottom: 40px; }
+        .footer-flex { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; padding-bottom: 40px; }
         .footer-right { display: flex; gap: 30px; }
         .footer-link { color: var(--muted); transition: color 0.3s; }
-        .footer-link:hover { color: var(--text); }
+        .footer-link:hover { color: var(--accent); }
 
         /* Smooth Reveal Animations */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -116,10 +206,13 @@
         /* Mobile Adjustments */
         @media (max-width: 900px) {
             .container { padding: 0 20px; }
-            .navbar { padding: 20px; }
-            .nav-links { display: none; /* Hide on small mobile to look clean */ }
+            .navbar { padding: 15px 20px; }
+            .nav-container { gap: 15px; }
+            .navbar-right { gap: 15px; }
+            .nav-links { display: none; /* मोबाइलमा लिंक लुकाउने */ }
             .hero { padding-top: 120px; }
             .hero-top { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .huge-text { margin: 20px 0; }
             .hero-grid, .grid-2 { grid-template-columns: 1fr; gap: 40px; }
             .section { padding: 80px 0; }
             .list-item { flex-direction: column; gap: 10px; padding: 30px 0; }
@@ -129,15 +222,22 @@
         }
     </style>
 </head>
-<body>
-
-    <nav class="navbar">
+<body data-theme="dark"> <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="brand">Dr. Piya Ratna.</a>
-            <div class="nav-links">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#work" class="nav-link">Work</a>
-                <a href="#contact" class="nav-link">Contact</a>
+            
+            <div class="navbar-right">
+                <div class="theme-switch" id="theme-switch">
+                    <div class="switch-pill switch-pill-dark" id="switch-pill"></div> <button class="switch-btn" data-theme="white" aria-label="White Theme"></button>
+                    <button class="switch-btn" data-theme="green" aria-label="Green Theme"></button>
+                    <button class="switch-btn" data-theme="dark" aria-label="Dark Theme"></button>
+                </div>
+
+                <div class="nav-links">
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#work" class="nav-link">Work</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -155,7 +255,7 @@
             
             <div class="hero-grid reveal delay-2">
                 <div class="hero-img-box">
-                    <img src="profile.jpg" alt="Dr. Piya Ratna" class="hero-img" onerror="this.src='https://via.placeholder.com/600x800/111/333?text=Profile+Photo'">
+                    <img src="profile.jpg" alt="Dr. Piya Ratna" class="hero-img" onerror="this.src='https://via.placeholder.com/600x800/222/555?text=Profile+Photo'">
                 </div>
                 <div class="hero-bio">
                     <p class="large-text">Dedicated to transforming societies through actionable youth empowerment, global peace initiatives, and sustainable socio-economic development.</p>
@@ -238,33 +338,63 @@
                 <p class="muted-text" style="font-size: 0.85rem; margin-top: 5px;">Designed by Ganesh Karki</p>
             </div>
             <div class="footer-right">
-                <a href="#" class="footer-link">LinkedIn</a>
-                <a href="#" class="footer-link">Twitter</a>
-                <a href="#" class="footer-link">Facebook</a>
+                <a href="#" class="footer-link" target="_blank">LinkedIn</a>
+                <a href="#" class="footer-link" target="_blank">Twitter</a>
+                <a href="#" class="footer-link" target="_blank">Facebook</a>
             </div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Smooth Fade-up Animation (Webflow style)
+            // --- 1. Smooth Fade-up Animation ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.15
+                threshold: 0.1
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        observer.unobserve(entry.target); // Animate only once
+                        observer.unobserve(entry.target); 
                     }
                 });
             }, observerOptions);
 
             const revealElements = document.querySelectorAll('.reveal');
             revealElements.forEach(el => observer.observe(el));
+
+            // --- 2. Theme Toggle Logic (काम गर्ने बनाइएको) ---
+            const themeSwitchButtons = document.querySelectorAll('.switch-btn');
+            const switchPill = document.getElementById('switch-pill');
+            const body = document.body;
+
+            // डिफल्टमा सेभ भएको थिम लोड गर्ने (यदि छ भने)
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            body.setAttribute('data-theme', savedTheme);
+            updatePillPosition(savedTheme);
+
+            themeSwitchButtons.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const selectedTheme = btn.getAttribute('data-theme');
+                    
+                    // थिम परिवर्तन गर्ने
+                    body.setAttribute('data-theme', selectedTheme);
+                    localStorage.setItem('theme', selectedTheme); // सेभ गर्ने
+                    
+                    // पिल सार्ने
+                    updatePillPosition(selectedTheme);
+                });
+            });
+
+            function updatePillPosition(theme) {
+                switchPill.className = 'switch-pill'; // क्लास रिसेट
+                if (theme === 'white') switchPill.classList.add('switch-pill-white');
+                if (theme === 'green') switchPill.classList.add('switch-pill-green');
+                if (theme === 'dark') switchPill.classList.add('switch-pill-dark');
+            }
         });
     </script>
 </body>
