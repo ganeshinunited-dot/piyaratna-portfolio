@@ -8,54 +8,66 @@
 <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500,400&display=swap" rel="stylesheet">
 
 <style>
+  /* Registering custom properties as animatable colors so the browser
+     smoothly tweens them on data-theme change, instead of snapping
+     instantly (which felt like a "click flash" rather than a fade) */
+  @property --bg{ syntax:'<color>'; inherits:true; initial-value:#2c1a0f; }
+  @property --bg2{ syntax:'<color>'; inherits:true; initial-value:#1f130b; }
+  @property --text{ syntax:'<color>'; inherits:true; initial-value:#f7ede0; }
+  @property --textSoft{ syntax:'<color>'; inherits:true; initial-value:#d9c4ab; }
+  @property --accent{ syntax:'<color>'; inherits:true; initial-value:#e8a23a; }
+  @property --line{ syntax:'<color>'; inherits:true; initial-value:#f7ede02e; }
+  @property --overlay{ syntax:'<color>'; inherits:true; initial-value:#1e120a8c; }
+
   :root{
-    --bg:#3b2415;
-    --bg-2:#2c1a0f;
+    --bg:#2c1a0f;
+    --bg2:#1f130b;
     --text:#f7ede0;
-    --text-soft:#d9c4ab;
+    --textSoft:#d9c4ab;
     --accent:#e8a23a;
-    --line:rgba(247,237,224,0.18);
-    --overlay:rgba(30,18,10,0.55);
+    --line:#f7ede02e;
+    --overlay:#1e120a8c;
+    transition: --bg 0.8s ease, --bg2 0.8s ease, --text 0.8s ease,
+                --textSoft 0.8s ease, --accent 0.8s ease, --line 0.8s ease,
+                --overlay 0.8s ease;
   }
 
   html[data-theme="cream"]{
-    --bg:#e8d9c2;
-    --bg-2:#ddc9a8;
+    --bg:#e9dac3;
+    --bg2:#ddc9a8;
     --text:#2b1d10;
-    --text-soft:#5c4a35;
+    --textSoft:#5c4a35;
     --accent:#a8431f;
-    --line:rgba(43,29,16,0.18);
-    --overlay:rgba(232,217,194,0.62);
+    --line:#2b1d102e;
+    --overlay:#e9dac39e;
   }
 
   html[data-theme="green"]{
-    --bg:#16261c;
-    --bg-2:#0e1a13;
+    --bg:#152419;
+    --bg2:#0d1811;
     --text:#eaf3ea;
-    --text-soft:#a9c4b1;
+    --textSoft:#a9c4b1;
     --accent:#7fd99a;
-    --line:rgba(234,243,234,0.16);
-    --overlay:rgba(10,20,14,0.6);
+    --line:#eaf3ea29;
+    --overlay:#0a140e96;
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
 
   html{
-    scroll-snap-type:y mandatory;
     scroll-behavior:smooth;
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-snap-type:none; scroll-behavior:auto;}
   }
 
   body{
     font-family:'Cabinet Grotesk', 'Inter', sans-serif;
-    background:var(--bg-2);
+    background:var(--bg2);
+    color:var(--text);
     overflow-x:hidden;
+    transition:background-color 0.8s ease, color 0.8s ease;
   }
 
   a{text-decoration:none; color:inherit;}
-  ::selection{background:var(--accent); color:var(--bg-2);}
+  ::selection{background:var(--accent); color:var(--bg2);}
 
   a:focus-visible, button:focus-visible{
     outline:2px solid var(--accent);
@@ -73,20 +85,30 @@
   .leather-tint{
     position:fixed; inset:0; z-index:0;
     background:var(--overlay);
-    transition:background 0.9s cubic-bezier(0.4,0,0.2,1);
+    transition:background-color 0.8s ease;
   }
 
-  /* ============ STACKED FULL-PAGE SECTIONS ============ */
+  /* ============ STACKED FULL-PAGE SECTIONS ============
+     Each panel is a sticky full-viewport block. As the user scrolls,
+     the next panel's solid background slides up over the previous one. */
+  main{ position:relative; z-index:1; }
+
   .panel{
-    position:relative;
+    position:sticky;
+    top:0;
     min-height:100vh;
     width:100%;
-    scroll-snap-align:start;
     display:flex;
     align-items:center;
-    padding:0 6vw;
-    color:var(--text);
+    padding:110px 6vw 70px;
   }
+
+  .panel-bg{
+    position:absolute; inset:0; z-index:-1;
+    background:var(--bg);
+    transition:background-color 0.8s ease;
+  }
+
   .panel-inner{
     position:relative;
     width:100%;
@@ -94,56 +116,26 @@
     margin:0 auto;
   }
 
-  /* Sticky stacking: each panel pins to top of viewport while the next
-     one scrolls up and visually covers it underneath */
-  .stack{
-    position:sticky;
-    top:0;
-    min-height:100vh;
-  }
-  #panel-1{ z-index:1; }
-  #panel-2{ z-index:2; }
-  #panel-3{ z-index:3; }
-  #panel-4{ z-index:4; }
-  #panel-5{ z-index:5; }
-
-  .panel-bg{
-    position:absolute; inset:0; z-index:-1;
-    background:rgba(20,11,6,0.94);
-    transition:background 0.9s cubic-bezier(0.4,0,0.2,1);
-  }
-  html[data-theme="cream"] .panel-bg{ background:rgba(232,217,194,0.96); }
-  html[data-theme="green"] .panel-bg{ background:rgba(8,16,11,0.94); }
-
   .panel-divider{
     position:absolute; top:0; left:0; right:0; height:1px;
     background:var(--line);
-    z-index:2;
   }
 
   /* ============ PILL NAVBAR ============ */
   .pill-nav{
     position:fixed;
-    top:24px; left:50%;
+    top:22px; left:50%;
     transform:translateX(-50%);
     z-index:1000;
     display:flex; align-items:center; gap:18px;
     padding:10px 12px 10px 22px;
     border-radius:999px;
-    background:rgba(20,12,7,0.55);
-    border:1px solid rgba(247,237,224,0.22);
+    background:var(--bg2);
+    opacity:0.92;
+    border:1px solid var(--line);
     backdrop-filter:blur(14px) saturate(140%);
-    box-shadow:0 8px 30px rgba(0,0,0,0.35);
-    transition:background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
-  }
-  html[data-theme="cream"] .pill-nav{
-    background:rgba(232,217,194,0.65);
-    border-color:rgba(43,29,16,0.22);
-    box-shadow:0 8px 24px rgba(80,60,30,0.18);
-  }
-  html[data-theme="green"] .pill-nav{
-    background:rgba(10,20,14,0.6);
-    border-color:rgba(234,243,234,0.2);
+    box-shadow:0 8px 30px rgba(0,0,0,0.3);
+    transition:background-color 0.8s ease, border-color 0.8s ease;
   }
 
   .pill-brand{
@@ -151,13 +143,12 @@
     color:var(--text);
     white-space:nowrap;
     letter-spacing:-0.01em;
-    transition:color 0.6s ease;
   }
 
   .pill-links{display:flex; gap:16px;}
   .pill-links a{
     font-size:0.78rem; font-weight:500;
-    color:var(--text-soft);
+    color:var(--textSoft);
     padding:6px 4px;
     transition:color 0.3s ease;
   }
@@ -171,23 +162,23 @@
   .theme-dot{
     width:18px; height:18px;
     border-radius:50%;
-    border:2px solid rgba(247,237,224,0.35);
+    border:2px solid transparent;
     cursor:pointer;
     padding:0;
-    transition:transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .theme-dot:hover{ transform:scale(1.15); }
+  .theme-dot:hover{ transform:scale(1.12); }
   .theme-dot[data-active="true"]{
-    border-color:var(--text);
-    box-shadow:0 0 0 2px var(--bg-2), 0 0 0 3px var(--accent);
+    border-color:var(--accent);
+    box-shadow:0 0 0 2px var(--bg2);
   }
-  .theme-dot.t-dark{ background:#3b2415; }
-  .theme-dot.t-cream{ background:#e8d9c2; }
-  .theme-dot.t-green{ background:#16261c; }
+  .theme-dot.t-dark{ background:#2c1a0f; }
+  .theme-dot.t-cream{ background:#e9dac3; }
+  .theme-dot.t-green{ background:#152419; }
 
   @media (max-width:760px){
     .pill-links{ display:none; }
-    .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:16px; }
+    .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
   }
 
   /* ============ HERO PANEL ============ */
@@ -211,8 +202,11 @@
     width:100%; height:100%; object-fit:cover;
     display:block;
   }
+  .photo-fallback{
+    color:var(--textSoft); font-size:0.85rem; text-align:center; padding:20px;
+  }
 
-  .hero-copy .eyebrow{
+  .eyebrow{
     font-size:0.85rem; font-weight:500;
     letter-spacing:0.06em; text-transform:uppercase;
     color:var(--accent);
@@ -225,10 +219,12 @@
     line-height:0.98;
     letter-spacing:-0.02em;
     margin-bottom:24px;
+    color:var(--text);
+    transition:color 0.8s ease;
   }
   .hero-tagline{
     font-size:clamp(1.05rem, 1.6vw, 1.35rem);
-    color:var(--text-soft);
+    color:var(--textSoft);
     font-weight:400;
     max-width:480px;
     margin-bottom:34px;
@@ -242,19 +238,19 @@
     font-size:0.92rem;
     transition:transform 0.25s ease, opacity 0.25s ease;
   }
-  .btn-solid{ background:var(--accent); color:var(--bg-2); }
+  .btn-solid{ background:var(--accent); color:var(--bg2); }
   .btn-solid:hover{ transform:translateY(-2px); opacity:0.9; }
   .btn-outline{ border:1px solid var(--line); color:var(--text); }
   .btn-outline:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
 
   .scroll-cue{
-    position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+    position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
     font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--text-soft);
+    color:var(--textSoft);
     display:flex; flex-direction:column; align-items:center; gap:8px;
     animation:bob 2.2s ease-in-out infinite;
   }
-  .scroll-cue span.bar{ width:1px; height:26px; background:var(--text-soft); }
+  .scroll-cue span.bar{ width:1px; height:26px; background:var(--textSoft); }
   @keyframes bob{ 0%,100%{ transform:translate(-50%,0); } 50%{ transform:translate(-50%,8px); } }
 
   @media (max-width:860px){
@@ -273,10 +269,12 @@
     line-height:1.02;
     letter-spacing:-0.01em;
     margin-bottom:28px;
+    color:var(--text);
+    transition:color 0.8s ease;
   }
   .panel-body{
     font-size:1.05rem;
-    color:var(--text-soft);
+    color:var(--textSoft);
     max-width:600px;
     font-weight:400;
   }
@@ -286,7 +284,7 @@
   .work-tag{
     display:inline-block; font-weight:700; font-size:0.78rem;
     letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--bg-2); background:var(--accent);
+    color:var(--bg2); background:var(--accent);
     padding:7px 16px; border-radius:999px; margin-bottom:22px;
   }
   @media (max-width:860px){ .work-grid{ grid-template-columns:1fr; gap:30px; } }
@@ -299,8 +297,8 @@
     background:rgba(255,255,255,0.03);
   }
   .focus-num{ font-weight:800; font-size:0.85rem; color:var(--accent); display:block; margin-bottom:16px; }
-  .focus-card h4{ font-weight:700; font-size:1.25rem; margin-bottom:10px; }
-  .focus-card p{ color:var(--text-soft); font-size:0.95rem; }
+  .focus-card h4{ font-weight:700; font-size:1.25rem; margin-bottom:10px; color:var(--text); }
+  .focus-card p{ color:var(--textSoft); font-size:0.95rem; }
   @media (max-width:860px){ .focus-grid{ grid-template-columns:1fr; } }
 
   /* ============ ROLES PANEL ============ */
@@ -311,8 +309,8 @@
     border-top:1px solid var(--line);
   }
   .role-row:last-child{ border-bottom:1px solid var(--line); }
-  .role-org{ font-weight:700; font-size:1.3rem; }
-  .role-title{ color:var(--text-soft); font-size:0.92rem; }
+  .role-org{ font-weight:700; font-size:1.3rem; color:var(--text); }
+  .role-title{ color:var(--textSoft); font-size:0.92rem; }
   .role-period{ font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-align:right; color:var(--accent); }
   @media (max-width:760px){
     .role-row{ grid-template-columns:1fr; gap:4px; }
@@ -327,7 +325,7 @@
   .field label{
     display:block; font-size:0.74rem; font-weight:700;
     letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--text-soft); margin-bottom:8px;
+    color:var(--textSoft); margin-bottom:8px;
   }
   .field input, .field textarea{
     width:100%; background:rgba(255,255,255,0.05);
@@ -337,7 +335,7 @@
     transition:border-color 0.25s ease, background 0.25s ease;
     resize:vertical;
   }
-  .field input::placeholder, .field textarea::placeholder{ color:var(--text-soft); opacity:0.55; }
+  .field input::placeholder, .field textarea::placeholder{ color:var(--textSoft); opacity:0.55; }
   .field input:focus, .field textarea:focus{ border-color:var(--accent); background:rgba(255,255,255,0.08); }
 
   .form-status{ font-size:0.85rem; font-weight:500; margin-top:14px; min-height:18px; }
@@ -350,19 +348,25 @@
     margin-top:50px; padding-top:24px;
     border-top:1px solid var(--line);
   }
-  .footer-row p{ font-size:0.85rem; color:var(--text-soft); }
+  .footer-row p{ font-size:0.85rem; color:var(--textSoft); }
   .footer-links{ display:flex; gap:22px; }
-  .footer-links a{ font-size:0.85rem; color:var(--text-soft); transition:color 0.25s; }
+  .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; }
   .footer-links a:hover{ color:var(--accent); }
 
-  /* ============ REVEAL ON ENTER ============ */
-  .reveal{ opacity:0; transform:translateY(34px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-  .reveal.active{ opacity:1; transform:translateY(0); }
-  .d1{ transition-delay:0.12s; }
-  .d2{ transition-delay:0.24s; }
-
-  @media (max-width:600px){
-    .panel{ padding:0 6vw; }
+  /* ============ ENTRANCE ANIMATION ============
+     Pure CSS, runs once on page load — no JS dependency, so content
+     is never stuck invisible if a script fails. */
+  .rise{
+    animation:riseIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .rise-d1{ animation-delay:0.12s; }
+  .rise-d2{ animation-delay:0.22s; }
+  @keyframes riseIn{
+    from{ opacity:0; transform:translateY(26px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rise{ animation:none; }
   }
 </style>
 </head>
@@ -387,17 +391,17 @@
 
 <main>
 
-  <section class="panel stack" id="panel-1">
+  <section class="panel" id="panel-1" style="z-index:1;">
     <div class="panel-bg"></div>
     <div class="panel-inner">
       <div class="hero-split">
-        <div class="reveal">
+        <div class="rise">
           <div class="hero-photo-wrap">
             <img src="profile.jpg" alt="Portrait of Dr. Piya Ratna"
-                 onerror="this.outerHTML='<span style=&quot;color:var(--text-soft);font-size:0.85rem;text-align:center;padding:20px;display:block;&quot;>Add profile.jpg to this folder</span>'">
+                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'photo-fallback',textContent:'Add profile.jpg to this folder'}))">
           </div>
         </div>
-        <div class="hero-copy reveal d1">
+        <div class="hero-copy rise rise-d1">
           <span class="eyebrow">Global Youth Leader &amp; Peace Ambassador</span>
           <h1 class="hero-name">Piya<br>Ratna.</h1>
           <p class="hero-tagline">Transforming societies through youth empowerment, global peace initiatives, and sustainable development.</p>
@@ -411,17 +415,17 @@
     <div class="scroll-cue"><span>Scroll</span><span class="bar"></span></div>
   </section>
 
-  <section class="panel stack" id="panel-2">
+  <section class="panel" id="panel-2" style="z-index:2;">
     <div class="panel-divider"></div>
     <div class="panel-bg"></div>
     <div class="panel-inner">
       <div class="work-grid">
-        <div class="reveal">
+        <div class="rise">
           <span class="panel-label">Organization</span>
           <h2 class="panel-title">Track<br>Nepal.</h2>
           <span class="work-tag">President &amp; Core Visionary</span>
         </div>
-        <div class="reveal d1">
+        <div class="rise rise-d1">
           <p class="panel-body" style="margin-bottom:28px;">Championing community service, international volunteer service, and sustainable development. Under his leadership, Track Nepal spearheads the economic empowerment of rural women, children's development programs, and public health drives.</p>
           <a href="https://tracknepal.org.np/" target="_blank" rel="noopener" class="btn btn-outline">Visit tracknepal.org.np ↗</a>
         </div>
@@ -429,13 +433,13 @@
     </div>
   </section>
 
-  <section class="panel stack" id="panel-3">
+  <section class="panel" id="panel-3" style="z-index:3;">
     <div class="panel-divider"></div>
     <div class="panel-bg"></div>
     <div class="panel-inner">
-      <span class="panel-label reveal">Focus</span>
-      <h2 class="panel-title reveal d1">What drives<br>the work.</h2>
-      <div class="focus-grid reveal d2">
+      <span class="panel-label rise">Focus</span>
+      <h2 class="panel-title rise rise-d1">What drives<br>the work.</h2>
+      <div class="focus-grid rise rise-d2">
         <div class="focus-card">
           <span class="focus-num">01</span>
           <h4>Youth Empowerment</h4>
@@ -455,13 +459,13 @@
     </div>
   </section>
 
-  <section class="panel stack" id="panel-4">
+  <section class="panel" id="panel-4" style="z-index:4;">
     <div class="panel-divider"></div>
     <div class="panel-bg"></div>
     <div class="panel-inner" id="roles">
-      <span class="panel-label reveal">Roles</span>
-      <h2 class="panel-title reveal d1">Leadership<br>record.</h2>
-      <div class="reveal d2">
+      <span class="panel-label rise">Roles</span>
+      <h2 class="panel-title rise rise-d1">Leadership<br>record.</h2>
+      <div class="rise rise-d2">
         <div class="role-row">
           <h3 class="role-org">International Youth Society</h3>
           <p class="role-title">Global President, Nepal Chapter</p>
@@ -481,17 +485,17 @@
     </div>
   </section>
 
-  <section class="panel stack" id="panel-5">
+  <section class="panel" id="panel-5" style="z-index:5;">
     <div class="panel-divider"></div>
     <div class="panel-bg"></div>
     <div class="panel-inner" id="contact">
       <div class="contact-grid">
-        <div class="reveal">
+        <div class="rise">
           <span class="panel-label">Contact</span>
           <h2 class="panel-title">Let's<br>connect.</h2>
           <p class="panel-body">Open for collaborations, speaking engagements, and global projects in youth leadership and peacebuilding.</p>
         </div>
-        <div class="reveal d1">
+        <div class="rise rise-d1">
           <form id="contactForm">
             <div class="field">
               <label for="name">Name</label>
@@ -526,60 +530,48 @@
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+(function(){
 
-  /* Reveal on enter */
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting){
-        entry.target.classList.add('active');
-      } else {
-        entry.target.classList.remove('active');
-      }
+  /* Theme toggle — simple, no dependency on other systems */
+  function initTheme(){
+    var dots = document.querySelectorAll('.theme-dot');
+    var html = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('site-theme'); } catch(e){}
+
+    if (saved){
+      html.setAttribute('data-theme', saved);
+      dots.forEach(function(d){
+        d.setAttribute('data-active', d.getAttribute('data-theme') === saved ? 'true' : 'false');
+      });
+    }
+
+    dots.forEach(function(dot){
+      dot.addEventListener('click', function(){
+        var theme = dot.getAttribute('data-theme');
+        html.setAttribute('data-theme', theme);
+        try { localStorage.setItem('site-theme', theme); } catch(e){}
+        dots.forEach(function(d){
+          d.setAttribute('data-active', d === dot ? 'true' : 'false');
+        });
+      });
     });
-  }, { threshold: 0.18 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  /* Theme toggle */
-  const dots = document.querySelectorAll('.theme-dot');
-  const html = document.documentElement;
-  const saved = localStorage.getItem('site-theme');
-  if (saved){
-    html.setAttribute('data-theme', saved);
-    dots.forEach(d => d.setAttribute('data-active', d.getAttribute('data-theme') === saved ? 'true' : 'false'));
   }
 
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const theme = dot.getAttribute('data-theme');
-      html.setAttribute('data-theme', theme);
-      localStorage.setItem('site-theme', theme);
-      dots.forEach(d => d.setAttribute('data-active', d === dot ? 'true' : 'false'));
-    });
-  });
-
   /* Contact form -> Formspree */
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
-  const form = document.getElementById('contactForm');
-  const status = document.getElementById('formStatus');
-  const btn = document.getElementById('submitBtn');
+  function initForm(){
+    var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    var status = document.getElementById('formStatus');
+    var btn = document.getElementById('submitBtn');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')){
-      status.textContent = 'Form not yet connected — add your Formspree endpoint in the code.';
-      status.className = 'form-status err';
-      return;
-    }
-    btn.textContent = 'Sending...';
-    btn.style.pointerEvents = 'none';
-    status.textContent = '';
-    status.className = 'form-status';
-    try{
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      });
-      if (res.ok){
-        status.textContent = 'Message sent
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (FORMSPREE_ENDPOINT.indexOf('YOUR_FORM_ID') !== -1){
+        status.textContent = 'Form not yet connected — add your Formspree endpoint in the code.';
+        status.className = 'form-status err';
+        return;
+      }
+      btn.textContent = 'Sending...';
+      
