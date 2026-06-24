@@ -97,18 +97,11 @@
     width:100%;
     display:flex;
     align-items:center;
-    padding:110px 6vw 70px;
-    overflow:hidden; 
+    padding:120px 6vw 100px; /* Adjusted padding to center content better */
     
-    /* FIX 2: प्यानल टाँसिएपछि पढ्नको लागि ६०vh को खाली समय (scroll gap) थपिएको छ */
-    margin-bottom: 65vh; 
+    /* FIX: Removed overflow:hidden and margin-bottom so content never clips */
   }
   
-  /* अन्तिम प्यानल पछि खाली ठाउँ चाहिँदैन */
-  .panel:last-child {
-    margin-bottom: 0;
-  }
-
   .panel-bg{
     position:absolute; inset:0; z-index:-1;
     background:var(--bg);
@@ -182,11 +175,6 @@
   .theme-dot.t-dark{ background:#2c1a0f; }
   .theme-dot.t-cream{ background:#e9dac3; }
   .theme-dot.t-green{ background:#152419; }
-
-  @media (max-width:760px){
-    .pill-links{ display:none; }
-    .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
-  }
 
   /* ============ HERO PANEL ============ */
   .hero-split{
@@ -262,12 +250,6 @@
   .scroll-cue span.bar{ width:1px; height:26px; background:var(--textSoft); }
   @keyframes bob{ 0%,100%{ transform:translate(-50%,0); } 50%{ transform:translate(-50%,8px); } }
 
-  @media (max-width:860px){
-    .hero-split{ grid-template-columns:1fr; gap:36px; text-align:left; }
-    .hero-photo-wrap{ aspect-ratio:4/3; max-width:340px; margin: 0 auto; }
-    .hero-name { font-size: clamp(2.8rem, 10vw, 4rem); }
-  }
-
   /* ============ GENERIC PANEL HEADINGS ============ */
   .panel-label{
     font-size:0.8rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
@@ -300,7 +282,6 @@
     transition: background 0.3s ease;
   }
   .panel:hover .work-tag { background: var(--accent); }
-  @media (max-width:860px){ .work-grid{ grid-template-columns:1fr; gap:30px; } }
 
   /* ============ FOCUS PANEL ============ */
   .focus-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:10px; }
@@ -314,7 +295,6 @@
   .focus-num{ font-weight:800; font-size:0.85rem; color:var(--accent); display:block; margin-bottom:16px; }
   .focus-card h4{ font-weight:700; font-size:1.35rem; margin-bottom:12px; color:var(--text); letter-spacing: -0.01em;}
   .focus-card p{ color:var(--textSoft); font-size:1rem; line-height: 1.5; }
-  @media (max-width:860px){ .focus-grid{ grid-template-columns:1fr; } }
 
   /* ============ ROLES PANEL ============ */
   .role-row{
@@ -329,15 +309,9 @@
   .role-org{ font-weight:700; font-size:1.4rem; color:var(--text); letter-spacing: -0.01em;}
   .role-title{ color:var(--textSoft); font-size:1rem; }
   .role-period{ font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-align:right; color:var(--accent); }
-  @media (max-width:760px){
-    .role-row{ grid-template-columns:1fr; gap:8px; padding: 24px 0;}
-    .role-period{ text-align:left; }
-    .role-row:hover { padding-left: 0; }
-  }
 
   /* ============ CONTACT PANEL ============ */
   .contact-grid{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:6vw; align-items:start; }
-  @media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; gap:34px; } }
 
   .field{ margin-bottom:22px; }
   .field label{
@@ -370,6 +344,35 @@
   .footer-links{ display:flex; gap:22px; }
   .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; font-weight: 500;}
   .footer-links a:hover{ color:var(--accent); }
+
+
+  /* ============ FIX: SMART RESPONSIVENESS ============ 
+     सानो ल्यापटप वा मोबाइलमा Sticky स्ट्याक अफ हुन्छ र नर्मल 
+     स्क्रोलिङ हुन्छ ताकि कुनै पनि टेक्स्ट नछोपियोस् */
+  @media (max-width: 900px), (max-height: 750px) {
+    .panel {
+      position: relative; /* Disables sticky overlap */
+      min-height: auto;
+      padding: 120px 6vw 80px;
+    }
+    .scroll-cue { display: none; } /* Hide the 'Scroll' text on mobile */
+  }
+
+  /* Mobile Tweaks */
+  @media (max-width:860px){
+    .pill-links{ display:none; }
+    .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
+    .hero-split{ grid-template-columns:1fr; gap:36px; text-align:left; }
+    .hero-photo-wrap{ aspect-ratio:4/3; max-width:340px; margin: 0 auto; }
+    .hero-name { font-size: clamp(2.8rem, 10vw, 4rem); }
+    .work-grid{ grid-template-columns:1fr; gap:30px; }
+    .focus-grid{ grid-template-columns:1fr; }
+    .role-row{ grid-template-columns:1fr; gap:8px; padding: 24px 0;}
+    .role-period{ text-align:left; }
+    .role-row:hover { padding-left: 0; }
+    .contact-grid{ grid-template-columns:1fr; gap:34px; }
+  }
+
 
   /* ============ ENTRANCE ANIMATION ============ */
   .rise{
@@ -555,7 +558,6 @@
     var saved = null;
     try { saved = localStorage.getItem('site-theme'); } catch(e){}
 
-    // यदि पहिले सेभ गरिएको थिम छ भने
     if (saved){
       html.setAttribute('data-theme', saved);
       dots.forEach(function(d){
@@ -566,15 +568,8 @@
     dots.forEach(function(dot){
       dot.addEventListener('click', function(){
         var theme = dot.getAttribute('data-theme');
-        html.setAttribute('data-theme', theme); // HTML ट्यागमा चेन्ज गर्छ
+        html.setAttribute('data-theme', theme); 
         try { localStorage.setItem('site-theme', theme); } catch(e){}
         
-        // Active dot को डिजाइन मिलाउन
         dots.forEach(function(d){
-          d.setAttribute('data-active', d === dot ? 'true' : 'false');
-        });
-      });
-    });
-  }
-
-  /* Contact form -> Formspree
+          d.setAttr
