@@ -8,9 +8,7 @@
 <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500,400&display=swap" rel="stylesheet">
 
 <style>
-  /* Registering custom properties as animatable colors so the browser
-     smoothly tweens them on data-theme change, instead of snapping
-     instantly (which felt like a "click flash" rather than a fade) */
+  /* Smooth theme transition properties */
   @property --bg{ syntax:'<color>'; inherits:true; initial-value:#2c1a0f; }
   @property --bg2{ syntax:'<color>'; inherits:true; initial-value:#1f130b; }
   @property --text{ syntax:'<color>'; inherits:true; initial-value:#f7ede0; }
@@ -56,13 +54,15 @@
 
   html{
     scroll-behavior:smooth;
+    /* FIX: overflow-x: hidden breaks position: sticky. Use clip instead */
+    overflow-x:clip; 
   }
 
   body{
     font-family:'Cabinet Grotesk', 'Inter', sans-serif;
     background:var(--bg2);
     color:var(--text);
-    overflow-x:hidden;
+    overflow-x:clip;
     transition:background-color 0.8s ease, color 0.8s ease;
   }
 
@@ -88,9 +88,7 @@
     transition:background-color 0.8s ease;
   }
 
-  /* ============ STACKED FULL-PAGE SECTIONS ============
-     Each panel is a sticky full-viewport block. As the user scrolls,
-     the next panel's solid background slides up over the previous one. */
+  /* ============ STACKED FULL-PAGE SECTIONS ============ */
   main{ position:relative; z-index:1; }
 
   .panel{
@@ -101,6 +99,8 @@
     display:flex;
     align-items:center;
     padding:110px 6vw 70px;
+    /* Ensure the content doesn't overflow the sticky container ungracefully */
+    overflow: hidden; 
   }
 
   .panel-bg{
@@ -109,16 +109,18 @@
     transition:background-color 0.8s ease;
   }
 
+  /* Extra border top for the Paper Tiger distinct panel separation */
+  .panel-divider{
+    position:absolute; top:0; left:0; right:0; height:1px;
+    background:var(--line);
+    z-index: 10;
+  }
+
   .panel-inner{
     position:relative;
     width:100%;
     max-width:1280px;
     margin:0 auto;
-  }
-
-  .panel-divider{
-    position:absolute; top:0; left:0; right:0; height:1px;
-    background:var(--line);
   }
 
   /* ============ PILL NAVBAR ============ */
@@ -131,7 +133,7 @@
     padding:10px 12px 10px 22px;
     border-radius:999px;
     background:var(--bg2);
-    opacity:0.92;
+    opacity:0.95;
     border:1px solid var(--line);
     backdrop-filter:blur(14px) saturate(140%);
     box-shadow:0 8px 30px rgba(0,0,0,0.3);
@@ -215,9 +217,9 @@
   }
   .hero-name{
     font-weight:800;
-    font-size:clamp(2.6rem, 7vw, 5.2rem);
-    line-height:0.98;
-    letter-spacing:-0.02em;
+    font-size:clamp(3.5rem, 8vw, 6.5rem); /* Made slightly larger/bolder for Paper Tiger vibe */
+    line-height:0.95;
+    letter-spacing:-0.03em;
     margin-bottom:24px;
     color:var(--text);
     transition:color 0.8s ease;
@@ -228,18 +230,20 @@
     font-weight:400;
     max-width:480px;
     margin-bottom:34px;
+    line-height: 1.5;
   }
   .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
   .btn{
     display:inline-block;
-    padding:15px 30px;
+    padding:16px 32px;
     border-radius:999px;
     font-weight:700;
     font-size:0.92rem;
-    transition:transform 0.25s ease, opacity 0.25s ease;
+    transition:transform 0.25s ease, opacity 0.25s ease, background 0.3s ease, color 0.3s ease;
+    cursor: pointer;
   }
-  .btn-solid{ background:var(--accent); color:var(--bg2); }
-  .btn-solid:hover{ transform:translateY(-2px); opacity:0.9; }
+  .btn-solid{ background:var(--text); color:var(--bg2); }
+  .btn-solid:hover{ transform:translateY(-2px); opacity:0.9; background:var(--accent); color:var(--bg2); }
   .btn-outline{ border:1px solid var(--line); color:var(--text); }
   .btn-outline:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
 
@@ -255,7 +259,8 @@
 
   @media (max-width:860px){
     .hero-split{ grid-template-columns:1fr; gap:36px; text-align:left; }
-    .hero-photo-wrap{ aspect-ratio:4/3; max-width:340px; }
+    .hero-photo-wrap{ aspect-ratio:4/3; max-width:340px; margin: 0 auto; }
+    .hero-name { font-size: clamp(2.8rem, 10vw, 4rem); }
   }
 
   /* ============ GENERIC PANEL HEADINGS ============ */
@@ -265,18 +270,19 @@
   }
   .panel-title{
     font-weight:800;
-    font-size:clamp(2.1rem, 5vw, 3.8rem);
-    line-height:1.02;
-    letter-spacing:-0.01em;
+    font-size:clamp(2.5rem, 6vw, 4.5rem);
+    line-height:0.98;
+    letter-spacing:-0.02em;
     margin-bottom:28px;
     color:var(--text);
     transition:color 0.8s ease;
   }
   .panel-body{
-    font-size:1.05rem;
+    font-size:1.15rem;
     color:var(--textSoft);
     max-width:600px;
     font-weight:400;
+    line-height: 1.6;
   }
 
   /* ============ WORK PANEL ============ */
@@ -284,37 +290,44 @@
   .work-tag{
     display:inline-block; font-weight:700; font-size:0.78rem;
     letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--bg2); background:var(--accent);
+    color:var(--bg2); background:var(--text);
     padding:7px 16px; border-radius:999px; margin-bottom:22px;
+    transition: background 0.3s ease;
   }
+  .panel:hover .work-tag { background: var(--accent); }
   @media (max-width:860px){ .work-grid{ grid-template-columns:1fr; gap:30px; } }
 
   /* ============ FOCUS PANEL ============ */
   .focus-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:10px; }
   .focus-card{
     border:1px solid var(--line); border-radius:16px;
-    padding:30px 26px;
-    background:rgba(255,255,255,0.03);
+    padding:35px 30px;
+    background:rgba(255,255,255,0.02);
+    transition: background 0.3s ease, border-color 0.3s ease;
   }
+  .focus-card:hover { background:rgba(255,255,255,0.05); border-color: var(--accent); }
   .focus-num{ font-weight:800; font-size:0.85rem; color:var(--accent); display:block; margin-bottom:16px; }
-  .focus-card h4{ font-weight:700; font-size:1.25rem; margin-bottom:10px; color:var(--text); }
-  .focus-card p{ color:var(--textSoft); font-size:0.95rem; }
+  .focus-card h4{ font-weight:700; font-size:1.35rem; margin-bottom:12px; color:var(--text); letter-spacing: -0.01em;}
+  .focus-card p{ color:var(--textSoft); font-size:1rem; line-height: 1.5; }
   @media (max-width:860px){ .focus-grid{ grid-template-columns:1fr; } }
 
   /* ============ ROLES PANEL ============ */
   .role-row{
     display:grid; grid-template-columns:1.4fr 1fr 0.6fr; gap:20px;
     align-items:baseline;
-    padding:24px 0;
+    padding:32px 0;
     border-top:1px solid var(--line);
+    transition: padding-left 0.3s ease;
   }
+  .role-row:hover { padding-left: 10px; }
   .role-row:last-child{ border-bottom:1px solid var(--line); }
-  .role-org{ font-weight:700; font-size:1.3rem; color:var(--text); }
-  .role-title{ color:var(--textSoft); font-size:0.92rem; }
+  .role-org{ font-weight:700; font-size:1.4rem; color:var(--text); letter-spacing: -0.01em;}
+  .role-title{ color:var(--textSoft); font-size:1rem; }
   .role-period{ font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-align:right; color:var(--accent); }
   @media (max-width:760px){
-    .role-row{ grid-template-columns:1fr; gap:4px; }
+    .role-row{ grid-template-columns:1fr; gap:8px; padding: 24px 0;}
     .role-period{ text-align:left; }
+    .role-row:hover { padding-left: 0; }
   }
 
   /* ============ CONTACT PANEL ============ */
@@ -328,14 +341,14 @@
     color:var(--textSoft); margin-bottom:8px;
   }
   .field input, .field textarea{
-    width:100%; background:rgba(255,255,255,0.05);
+    width:100%; background:rgba(255,255,255,0.03);
     border:1px solid var(--line); border-radius:12px;
-    padding:14px 16px; font-family:inherit; font-size:1rem;
+    padding:16px 18px; font-family:inherit; font-size:1rem;
     color:var(--text); outline:none;
     transition:border-color 0.25s ease, background 0.25s ease;
     resize:vertical;
   }
-  .field input::placeholder, .field textarea::placeholder{ color:var(--textSoft); opacity:0.55; }
+  .field input::placeholder, .field textarea::placeholder{ color:var(--textSoft); opacity:0.4; }
   .field input:focus, .field textarea:focus{ border-color:var(--accent); background:rgba(255,255,255,0.08); }
 
   .form-status{ font-size:0.85rem; font-weight:500; margin-top:14px; min-height:18px; }
@@ -345,24 +358,22 @@
   .footer-row{
     display:flex; justify-content:space-between; align-items:center;
     flex-wrap:wrap; gap:14px;
-    margin-top:50px; padding-top:24px;
+    margin-top:60px; padding-top:30px;
     border-top:1px solid var(--line);
   }
-  .footer-row p{ font-size:0.85rem; color:var(--textSoft); }
+  .footer-row p{ font-size:0.85rem; color:var(--textSoft); font-weight: 500;}
   .footer-links{ display:flex; gap:22px; }
-  .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; }
+  .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; font-weight: 500;}
   .footer-links a:hover{ color:var(--accent); }
 
-  /* ============ ENTRANCE ANIMATION ============
-     Pure CSS, runs once on page load — no JS dependency, so content
-     is never stuck invisible if a script fails. */
+  /* ============ ENTRANCE ANIMATION ============ */
   .rise{
     animation:riseIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
   }
   .rise-d1{ animation-delay:0.12s; }
   .rise-d2{ animation-delay:0.22s; }
   @keyframes riseIn{
-    from{ opacity:0; transform:translateY(26px); }
+    from{ opacity:0; transform:translateY(30px); }
     to{ opacity:1; transform:translateY(0); }
   }
   @media (prefers-reduced-motion: reduce){
@@ -418,7 +429,7 @@
   <section class="panel" id="panel-2" style="z-index:2;">
     <div class="panel-divider"></div>
     <div class="panel-bg"></div>
-    <div class="panel-inner">
+    <div class="panel-inner" id="work">
       <div class="work-grid">
         <div class="rise">
           <span class="panel-label">Organization</span>
@@ -509,7 +520,7 @@
               <label for="message">Message</label>
               <textarea id="message" name="message" rows="4" placeholder="Tell me about your project or inquiry..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-solid" id="submitBtn" style="border:none; cursor:pointer;">Send message ↗</button>
+            <button type="submit" class="btn btn-solid" id="submitBtn" style="border:none; cursor:pointer; width:100%;">Send message ↗</button>
             <p class="form-status" id="formStatus"></p>
           </form>
         </div>
@@ -532,7 +543,7 @@
 <script>
 (function(){
 
-  /* Theme toggle — simple, no dependency on other systems */
+  /* Theme toggle */
   function initTheme(){
     var dots = document.querySelectorAll('.theme-dot');
     var html = document.documentElement;
@@ -560,18 +571,4 @@
 
   /* Contact form -> Formspree */
   function initForm(){
-    var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
-    var form = document.getElementById('contactForm');
-    if (!form) return;
-    var status = document.getElementById('formStatus');
-    var btn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      if (FORMSPREE_ENDPOINT.indexOf('YOUR_FORM_ID') !== -1){
-        status.textContent = 'Form not yet connected — add your Formspree endpoint in the code.';
-        status.className = 'form-status err';
-        return;
-      }
-      btn.textContent = 'Sending...';
-      
+    var FORMSPR
