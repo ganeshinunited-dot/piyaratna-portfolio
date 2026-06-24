@@ -97,9 +97,16 @@
     width:100%;
     display:flex;
     align-items:center;
-    padding:120px 6vw 100px; /* Adjusted padding to center content better */
+    padding:110px 6vw 70px;
     
-    /* FIX: Removed overflow:hidden and margin-bottom so content never clips */
+    /* THE FIX: यो ७०vh (70% of screen) को ग्यापले गर्दा पेज होल्ड हुन्छ, 
+       प्रयोगकर्ताले पूरै कन्टेन्ट देख्न पाउँछन् अनि मात्र अर्को प्यानल माथि आउँछ। */
+    margin-bottom: 70vh; 
+  }
+
+  /* अन्तिम पेजपछि ग्याप चाहिँदैन */
+  .panel:last-child {
+    margin-bottom: 0;
   }
   
   .panel-bg{
@@ -346,20 +353,12 @@
   .footer-links a:hover{ color:var(--accent); }
 
 
-  /* ============ FIX: SMART RESPONSIVENESS ============ 
-     सानो ल्यापटप वा मोबाइलमा Sticky स्ट्याक अफ हुन्छ र नर्मल 
-     स्क्रोलिङ हुन्छ ताकि कुनै पनि टेक्स्ट नछोपियोस् */
-  @media (max-width: 900px), (max-height: 750px) {
-    .panel {
-      position: relative; /* Disables sticky overlap */
-      min-height: auto;
-      padding: 120px 6vw 80px;
-    }
-    .scroll-cue { display: none; } /* Hide the 'Scroll' text on mobile */
-  }
-
   /* Mobile Tweaks */
   @media (max-width:860px){
+    .panel {
+      padding: 100px 6vw 60px;
+      margin-bottom: 50vh; /* मोबाइलमा अलि छिटो आउने बनाइएको छ */
+    }
     .pill-links{ display:none; }
     .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
     .hero-split{ grid-template-columns:1fr; gap:36px; text-align:left; }
@@ -572,4 +571,12 @@
         try { localStorage.setItem('site-theme', theme); } catch(e){}
         
         dots.forEach(function(d){
-          d.setAttr
+          d.setAttribute('data-active', d === dot ? 'true' : 'false');
+        });
+      });
+    });
+  }
+
+  /* Contact form -> Formspree */
+  function initForm(){
+    var FORMSPREE_ENDPOINT = "htt
