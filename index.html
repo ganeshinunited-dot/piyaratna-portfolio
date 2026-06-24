@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +54,6 @@
 
   html{
     scroll-behavior:smooth;
-    /* FIX: overflow-x: hidden breaks position: sticky. Use clip instead */
     overflow-x:clip; 
   }
 
@@ -99,8 +98,15 @@
     display:flex;
     align-items:center;
     padding:110px 6vw 70px;
-    /* Ensure the content doesn't overflow the sticky container ungracefully */
-    overflow: hidden; 
+    overflow:hidden; 
+    
+    /* FIX 2: प्यानल टाँसिएपछि पढ्नको लागि ६०vh को खाली समय (scroll gap) थपिएको छ */
+    margin-bottom: 65vh; 
+  }
+  
+  /* अन्तिम प्यानल पछि खाली ठाउँ चाहिँदैन */
+  .panel:last-child {
+    margin-bottom: 0;
   }
 
   .panel-bg{
@@ -109,7 +115,6 @@
     transition:background-color 0.8s ease;
   }
 
-  /* Extra border top for the Paper Tiger distinct panel separation */
   .panel-divider{
     position:absolute; top:0; left:0; right:0; height:1px;
     background:var(--line);
@@ -217,7 +222,7 @@
   }
   .hero-name{
     font-weight:800;
-    font-size:clamp(3.5rem, 8vw, 6.5rem); /* Made slightly larger/bolder for Paper Tiger vibe */
+    font-size:clamp(3.5rem, 8vw, 6.5rem);
     line-height:0.95;
     letter-spacing:-0.03em;
     margin-bottom:24px;
@@ -381,7 +386,7 @@
   }
 </style>
 </head>
-<body data-theme="dark">
+<body>
 
 <div class="leather-fixed"></div>
 <div class="leather-tint"></div>
@@ -550,6 +555,7 @@
     var saved = null;
     try { saved = localStorage.getItem('site-theme'); } catch(e){}
 
+    // यदि पहिले सेभ गरिएको थिम छ भने
     if (saved){
       html.setAttribute('data-theme', saved);
       dots.forEach(function(d){
@@ -560,8 +566,10 @@
     dots.forEach(function(dot){
       dot.addEventListener('click', function(){
         var theme = dot.getAttribute('data-theme');
-        html.setAttribute('data-theme', theme);
+        html.setAttribute('data-theme', theme); // HTML ट्यागमा चेन्ज गर्छ
         try { localStorage.setItem('site-theme', theme); } catch(e){}
+        
+        // Active dot को डिजाइन मिलाउन
         dots.forEach(function(d){
           d.setAttribute('data-active', d === dot ? 'true' : 'false');
         });
@@ -569,6 +577,4 @@
     });
   }
 
-  /* Contact form -> Formspree */
-  function initForm(){
-    var FORMSPR
+  /* Contact form -> Formspree
