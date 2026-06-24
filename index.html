@@ -92,19 +92,19 @@
 
   .panel{
     position:sticky;
-    top:0;
+    /* top value is dynamically controlled by JS to fix the overlap issue */
+    top: 0; 
     min-height:100vh;
     width:100%;
     display:flex;
     align-items:center;
     padding:110px 6vw 70px;
     
-    /* THE FIX: यो ७०vh (70% of screen) को ग्यापले गर्दा पेज होल्ड हुन्छ, 
-       प्रयोगकर्ताले पूरै कन्टेन्ट देख्न पाउँछन् अनि मात्र अर्को प्यानल माथि आउँछ। */
-    margin-bottom: 70vh; 
+    /* यो ३०vh ग्यापले गर्दा एउटा पेज सकिएपछि अलिकति खाली ठाउँ आउँछ 
+       र मात्र अर्को पेज खप्टिन आउँछ। */
+    margin-bottom: 30vh; 
   }
 
-  /* अन्तिम पेजपछि ग्याप चाहिँदैन */
   .panel:last-child {
     margin-bottom: 0;
   }
@@ -352,12 +352,10 @@
   .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; font-weight: 500;}
   .footer-links a:hover{ color:var(--accent); }
 
-
   /* Mobile Tweaks */
   @media (max-width:860px){
     .panel {
       padding: 100px 6vw 60px;
-      margin-bottom: 50vh; /* मोबाइलमा अलि छिटो आउने बनाइएको छ */
     }
     .pill-links{ display:none; }
     .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
@@ -577,6 +575,7 @@
     });
   }
 
-  /* Contact form -> Formspree */
+  /* Contact form */
   function initForm(){
-    var FORMSPREE_ENDPOINT = "htt
+    var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+    var form = document.getElementById('contactForm');
