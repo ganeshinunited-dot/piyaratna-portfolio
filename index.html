@@ -1,581 +1,391 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="obsidian">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dr. Piya Ratna — Youth Leader & Peace Ambassador</title>
-<link rel="preconnect" href="https://api.fontshare.com">
-<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500,400&display=swap" rel="stylesheet">
-
-<style>
-  /* Smooth theme transition properties */
-  @property --bg{ syntax:'<color>'; inherits:true; initial-value:#2c1a0f; }
-  @property --bg2{ syntax:'<color>'; inherits:true; initial-value:#1f130b; }
-  @property --text{ syntax:'<color>'; inherits:true; initial-value:#f7ede0; }
-  @property --textSoft{ syntax:'<color>'; inherits:true; initial-value:#d9c4ab; }
-  @property --accent{ syntax:'<color>'; inherits:true; initial-value:#e8a23a; }
-  @property --line{ syntax:'<color>'; inherits:true; initial-value:#f7ede02e; }
-  @property --overlay{ syntax:'<color>'; inherits:true; initial-value:#1e120a8c; }
-
-  :root{
-    --bg:#2c1a0f;
-    --bg2:#1f130b;
-    --text:#f7ede0;
-    --textSoft:#d9c4ab;
-    --accent:#e8a23a;
-    --line:#f7ede02e;
-    --overlay:#1e120a8c;
-    transition: --bg 0.8s ease, --bg2 0.8s ease, --text 0.8s ease,
-                --textSoft 0.8s ease, --accent 0.8s ease, --line 0.8s ease,
-                --overlay 0.8s ease;
-  }
-
-  html[data-theme="cream"]{
-    --bg:#e9dac3;
-    --bg2:#ddc9a8;
-    --text:#2b1d10;
-    --textSoft:#5c4a35;
-    --accent:#a8431f;
-    --line:#2b1d102e;
-    --overlay:#e9dac39e;
-  }
-
-  html[data-theme="green"]{
-    --bg:#152419;
-    --bg2:#0d1811;
-    --text:#eaf3ea;
-    --textSoft:#a9c4b1;
-    --accent:#7fd99a;
-    --line:#eaf3ea29;
-    --overlay:#0a140e96;
-  }
-
-  *{margin:0;padding:0;box-sizing:border-box;}
-
-  html{
-    scroll-behavior:smooth;
-    overflow-x:clip; 
-  }
-
-  body{
-    font-family:'Cabinet Grotesk', 'Inter', sans-serif;
-    background:var(--bg2);
-    color:var(--text);
-    overflow-x:clip;
-    transition:background-color 0.8s ease, color 0.8s ease;
-  }
-
-  a{text-decoration:none; color:inherit;}
-  ::selection{background:var(--accent); color:var(--bg2);}
-
-  a:focus-visible, button:focus-visible{
-    outline:2px solid var(--accent);
-    outline-offset:3px;
-  }
-
-  /* ============ LEATHER BACKDROP ============ */
-  .leather-fixed{
-    position:fixed; inset:0; z-index:0;
-    background-image:url('leather.jpg');
-    background-size:480px auto;
-    background-repeat:repeat;
-    background-position:center;
-  }
-  .leather-tint{
-    position:fixed; inset:0; z-index:0;
-    background:var(--overlay);
-    transition:background-color 0.8s ease;
-  }
-
-  /* ============ STACKED FULL-PAGE SECTIONS ============ */
-  main{ position:relative; z-index:1; }
-
-  .panel{
-    position:sticky;
-    /* top value is dynamically controlled by JS to fix the overlap issue */
-    top: 0; 
-    min-height:100vh;
-    width:100%;
-    display:flex;
-    align-items:center;
-    padding:110px 6vw 70px;
-    
-    /* यो ३०vh ग्यापले गर्दा एउटा पेज सकिएपछि अलिकति खाली ठाउँ आउँछ 
-       र मात्र अर्को पेज खप्टिन आउँछ। */
-    margin-bottom: 30vh; 
-  }
-
-  .panel:last-child {
-    margin-bottom: 0;
-  }
-  
-  .panel-bg{
-    position:absolute; inset:0; z-index:-1;
-    background:var(--bg);
-    transition:background-color 0.8s ease;
-  }
-
-  .panel-divider{
-    position:absolute; top:0; left:0; right:0; height:1px;
-    background:var(--line);
-    z-index: 10;
-  }
-
-  .panel-inner{
-    position:relative;
-    width:100%;
-    max-width:1280px;
-    margin:0 auto;
-  }
-
-  /* ============ PILL NAVBAR ============ */
-  .pill-nav{
-    position:fixed;
-    top:22px; left:50%;
-    transform:translateX(-50%);
-    z-index:1000;
-    display:flex; align-items:center; gap:18px;
-    padding:10px 12px 10px 22px;
-    border-radius:999px;
-    background:var(--bg2);
-    opacity:0.95;
-    border:1px solid var(--line);
-    backdrop-filter:blur(14px) saturate(140%);
-    box-shadow:0 8px 30px rgba(0,0,0,0.3);
-    transition:background-color 0.8s ease, border-color 0.8s ease;
-  }
-
-  .pill-brand{
-    font-weight:700; font-size:0.95rem;
-    color:var(--text);
-    white-space:nowrap;
-    letter-spacing:-0.01em;
-  }
-
-  .pill-links{display:flex; gap:16px;}
-  .pill-links a{
-    font-size:0.78rem; font-weight:500;
-    color:var(--textSoft);
-    padding:6px 4px;
-    transition:color 0.3s ease;
-  }
-  .pill-links a:hover{ color:var(--accent); }
-
-  .theme-dots{
-    display:flex; gap:8px;
-    padding-left:14px;
-    border-left:1px solid var(--line);
-  }
-  .theme-dot{
-    width:18px; height:18px;
-    border-radius:50%;
-    border:2px solid transparent;
-    cursor:pointer;
-    padding:0;
-    transition:transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  .theme-dot:hover{ transform:scale(1.12); }
-  .theme-dot[data-active="true"]{
-    border-color:var(--accent);
-    box-shadow:0 0 0 2px var(--bg2);
-  }
-  .theme-dot.t-dark{ background:#2c1a0f; }
-  .theme-dot.t-cream{ background:#e9dac3; }
-  .theme-dot.t-green{ background:#152419; }
-
-  /* ============ HERO PANEL ============ */
-  .hero-split{
-    display:grid;
-    grid-template-columns:0.95fr 1.05fr;
-    gap:6vw;
-    align-items:center;
-  }
-  .hero-photo-wrap{
-    position:relative;
-    aspect-ratio:3/4;
-    border-radius:18px;
-    overflow:hidden;
-    border:1px solid var(--line);
-    box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
-    background:rgba(255,255,255,0.04);
-    display:flex; align-items:center; justify-content:center;
-  }
-  .hero-photo-wrap img{
-    width:100%; height:100%; object-fit:cover;
-    display:block;
-  }
-  .photo-fallback{
-    color:var(--textSoft); font-size:0.85rem; text-align:center; padding:20px;
-  }
-
-  .eyebrow{
-    font-size:0.85rem; font-weight:500;
-    letter-spacing:0.06em; text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:18px;
-    display:block;
-  }
-  .hero-name{
-    font-weight:800;
-    font-size:clamp(3.5rem, 8vw, 6.5rem);
-    line-height:0.95;
-    letter-spacing:-0.03em;
-    margin-bottom:24px;
-    color:var(--text);
-    transition:color 0.8s ease;
-  }
-  .hero-tagline{
-    font-size:clamp(1.05rem, 1.6vw, 1.35rem);
-    color:var(--textSoft);
-    font-weight:400;
-    max-width:480px;
-    margin-bottom:34px;
-    line-height: 1.5;
-  }
-  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
-  .btn{
-    display:inline-block;
-    padding:16px 32px;
-    border-radius:999px;
-    font-weight:700;
-    font-size:0.92rem;
-    transition:transform 0.25s ease, opacity 0.25s ease, background 0.3s ease, color 0.3s ease;
-    cursor: pointer;
-  }
-  .btn-solid{ background:var(--text); color:var(--bg2); }
-  .btn-solid:hover{ transform:translateY(-2px); opacity:0.9; background:var(--accent); color:var(--bg2); }
-  .btn-outline{ border:1px solid var(--line); color:var(--text); }
-  .btn-outline:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
-
-  .scroll-cue{
-    position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
-    font-size:0.72rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--textSoft);
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    animation:bob 2.2s ease-in-out infinite;
-  }
-  .scroll-cue span.bar{ width:1px; height:26px; background:var(--textSoft); }
-  @keyframes bob{ 0%,100%{ transform:translate(-50%,0); } 50%{ transform:translate(-50%,8px); } }
-
-  /* ============ GENERIC PANEL HEADINGS ============ */
-  .panel-label{
-    font-size:0.8rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:20px; display:block;
-  }
-  .panel-title{
-    font-weight:800;
-    font-size:clamp(2.5rem, 6vw, 4.5rem);
-    line-height:0.98;
-    letter-spacing:-0.02em;
-    margin-bottom:28px;
-    color:var(--text);
-    transition:color 0.8s ease;
-  }
-  .panel-body{
-    font-size:1.15rem;
-    color:var(--textSoft);
-    max-width:600px;
-    font-weight:400;
-    line-height: 1.6;
-  }
-
-  /* ============ WORK PANEL ============ */
-  .work-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:6vw; align-items:start; }
-  .work-tag{
-    display:inline-block; font-weight:700; font-size:0.78rem;
-    letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--bg2); background:var(--text);
-    padding:7px 16px; border-radius:999px; margin-bottom:22px;
-    transition: background 0.3s ease;
-  }
-  .panel:hover .work-tag { background: var(--accent); }
-
-  /* ============ FOCUS PANEL ============ */
-  .focus-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:10px; }
-  .focus-card{
-    border:1px solid var(--line); border-radius:16px;
-    padding:35px 30px;
-    background:rgba(255,255,255,0.02);
-    transition: background 0.3s ease, border-color 0.3s ease;
-  }
-  .focus-card:hover { background:rgba(255,255,255,0.05); border-color: var(--accent); }
-  .focus-num{ font-weight:800; font-size:0.85rem; color:var(--accent); display:block; margin-bottom:16px; }
-  .focus-card h4{ font-weight:700; font-size:1.35rem; margin-bottom:12px; color:var(--text); letter-spacing: -0.01em;}
-  .focus-card p{ color:var(--textSoft); font-size:1rem; line-height: 1.5; }
-
-  /* ============ ROLES PANEL ============ */
-  .role-row{
-    display:grid; grid-template-columns:1.4fr 1fr 0.6fr; gap:20px;
-    align-items:baseline;
-    padding:32px 0;
-    border-top:1px solid var(--line);
-    transition: padding-left 0.3s ease;
-  }
-  .role-row:hover { padding-left: 10px; }
-  .role-row:last-child{ border-bottom:1px solid var(--line); }
-  .role-org{ font-weight:700; font-size:1.4rem; color:var(--text); letter-spacing: -0.01em;}
-  .role-title{ color:var(--textSoft); font-size:1rem; }
-  .role-period{ font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-align:right; color:var(--accent); }
-
-  /* ============ CONTACT PANEL ============ */
-  .contact-grid{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:6vw; align-items:start; }
-
-  .field{ margin-bottom:22px; }
-  .field label{
-    display:block; font-size:0.74rem; font-weight:700;
-    letter-spacing:0.05em; text-transform:uppercase;
-    color:var(--textSoft); margin-bottom:8px;
-  }
-  .field input, .field textarea{
-    width:100%; background:rgba(255,255,255,0.03);
-    border:1px solid var(--line); border-radius:12px;
-    padding:16px 18px; font-family:inherit; font-size:1rem;
-    color:var(--text); outline:none;
-    transition:border-color 0.25s ease, background 0.25s ease;
-    resize:vertical;
-  }
-  .field input::placeholder, .field textarea::placeholder{ color:var(--textSoft); opacity:0.4; }
-  .field input:focus, .field textarea:focus{ border-color:var(--accent); background:rgba(255,255,255,0.08); }
-
-  .form-status{ font-size:0.85rem; font-weight:500; margin-top:14px; min-height:18px; }
-  .form-status.ok{ color:var(--accent); }
-  .form-status.err{ color:#e07a5f; }
-
-  .footer-row{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:14px;
-    margin-top:60px; padding-top:30px;
-    border-top:1px solid var(--line);
-  }
-  .footer-row p{ font-size:0.85rem; color:var(--textSoft); font-weight: 500;}
-  .footer-links{ display:flex; gap:22px; }
-  .footer-links a{ font-size:0.85rem; color:var(--textSoft); transition:color 0.25s; font-weight: 500;}
-  .footer-links a:hover{ color:var(--accent); }
-
-  /* Mobile Tweaks */
-  @media (max-width:860px){
-    .panel {
-      padding: 100px 6vw 60px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Piya Ratna — Global Youth Leader & Peace Ambassador</title>
+  <meta name="description" content="Official portfolio of Dr. Piya Ratna, highlighting youth empowerment, peacebuilding, sustainable development, and leadership roles." />
+  <meta name="theme-color" content="#0d1210" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#09100d;
+      --bg-2:#101a15;
+      --panel:#13221c;
+      --panel-2:#172a22;
+      --text:#f7f1e7;
+      --muted:#b7c2b7;
+      --soft:#d9c7a8;
+      --accent:#d8a74b;
+      --accent-2:#7bd39d;
+      --line:rgba(247,241,231,.14);
+      --shadow:0 34px 90px rgba(0,0,0,.34);
+      --radius:28px;
+      --max:1180px;
     }
-    .pill-links{ display:none; }
-    .pill-nav{ padding:9px 10px 9px 18px; gap:12px; top:14px; }
-    .hero-split{ grid-template-columns:1fr; gap:36px; text-align:left; }
-    .hero-photo-wrap{ aspect-ratio:4/3; max-width:340px; margin: 0 auto; }
-    .hero-name { font-size: clamp(2.8rem, 10vw, 4rem); }
-    .work-grid{ grid-template-columns:1fr; gap:30px; }
-    .focus-grid{ grid-template-columns:1fr; }
-    .role-row{ grid-template-columns:1fr; gap:8px; padding: 24px 0;}
-    .role-period{ text-align:left; }
-    .role-row:hover { padding-left: 0; }
-    .contact-grid{ grid-template-columns:1fr; gap:34px; }
-  }
 
+    html[data-theme="sand"]{
+      --bg:#efe2cf;
+      --bg-2:#e5d2b7;
+      --panel:#fff6ea;
+      --panel-2:#f3e0c4;
+      --text:#21170f;
+      --muted:#625241;
+      --soft:#7a5830;
+      --accent:#9d3f20;
+      --accent-2:#32734b;
+      --line:rgba(33,23,15,.15);
+      --shadow:0 34px 90px rgba(89,60,30,.18);
+    }
 
-  /* ============ ENTRANCE ANIMATION ============ */
-  .rise{
-    animation:riseIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
-  }
-  .rise-d1{ animation-delay:0.12s; }
-  .rise-d2{ animation-delay:0.22s; }
-  @keyframes riseIn{
-    from{ opacity:0; transform:translateY(30px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .rise{ animation:none; }
-  }
-</style>
+    html[data-theme="royal"]{
+      --bg:#0b1020;
+      --bg-2:#121a36;
+      --panel:#18234a;
+      --panel-2:#101833;
+      --text:#f4f0ff;
+      --muted:#c2bfe0;
+      --soft:#d6c8ff;
+      --accent:#c9a6ff;
+      --accent-2:#63d5ff;
+      --line:rgba(244,240,255,.16);
+      --shadow:0 34px 90px rgba(0,0,0,.42);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      font-family:"Cabinet Grotesk",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 32rem),
+        radial-gradient(circle at 90% 18%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 28rem),
+        linear-gradient(135deg,var(--bg),var(--bg-2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.28;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size:72px 72px;
+      mask-image:linear-gradient(to bottom,black,transparent 85%);
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(120deg,rgba(255,255,255,.06),transparent 18%,transparent 82%,rgba(255,255,255,.05));
+      mix-blend-mode:overlay;
+      z-index:-1;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button,input,textarea{font:inherit}
+    ::selection{background:var(--accent);color:var(--bg)}
+
+    .skip-link{
+      position:absolute;
+      top:-100px;
+      left:18px;
+      z-index:9999;
+      background:var(--text);
+      color:var(--bg);
+      padding:12px 16px;
+      border-radius:999px;
+      font-weight:800;
+    }
+    .skip-link:focus{top:18px}
+
+    .container{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+    .nav{
+      position:fixed;
+      top:18px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1050px,calc(100% - 28px));
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:10px 10px 10px 18px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:color-mix(in srgb,var(--panel) 78%,transparent);
+      backdrop-filter:blur(22px) saturate(140%);
+      box-shadow:0 16px 60px rgba(0,0,0,.18);
+    }
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em;white-space:nowrap}
+    .brand-mark{
+      width:34px;height:34px;border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:var(--bg);
+      font-weight:900;
+    }
+
+    .nav-links{display:flex;align-items:center;gap:6px}
+    .nav-links a{
+      padding:10px 13px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:.9rem;
+      font-weight:700;
+      transition:.25s ease;
+    }
+    .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.08);color:var(--text)}
+
+    .theme-switcher{display:flex;gap:8px;border-left:1px solid var(--line);padding-left:12px}
+    .theme-dot{
+      width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+      transition:.2s ease;
+    }
+    .theme-dot:hover{transform:scale(1.08)}
+    .theme-dot[aria-pressed="true"]{border-color:var(--text);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 38%,transparent)}
+    .theme-dot.obsidian{background:linear-gradient(135deg,#09100d,#d8a74b)}
+    .theme-dot.sand{background:linear-gradient(135deg,#efe2cf,#9d3f20)}
+    .theme-dot.royal{background:linear-gradient(135deg,#0b1020,#c9a6ff)}
+    .menu-btn{display:none;background:transparent;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:10px 13px;font-weight:800;cursor:pointer}
+
+    main{position:relative;z-index:1}
+    section{position:relative}
+    .hero{min-height:100svh;display:grid;align-items:center;padding:130px 0 70px}
+    .hero-grid{display:grid;grid-template-columns:1.03fr .97fr;gap:58px;align-items:center}
+    .kicker{
+      display:inline-flex;align-items:center;gap:9px;
+      padding:8px 13px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.05);color:var(--soft);
+      font-size:.78rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+
+    h1{
+      font-size:clamp(4rem,9vw,8.4rem);
+      line-height:.86;
+      letter-spacing:-.08em;
+      font-weight:900;
+      max-width:780px;
+    }
+    .gradient-text{background:linear-gradient(135deg,var(--text),var(--soft),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy{font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.62;color:var(--muted);max-width:640px;margin:26px 0 34px}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:15px 22px;border-radius:999px;font-weight:900;border:1px solid transparent;
+      transition:transform .25s ease,box-shadow .25s ease,background .25s ease,color .25s ease,border-color .25s ease;
+      min-height:52px;
+    }
+    .btn:hover{transform:translateY(-3px)}
+    .btn.primary{background:var(--text);color:var(--bg);box-shadow:0 18px 44px color-mix(in srgb,var(--text) 13%,transparent)}
+    .btn.primary:hover{background:var(--accent);box-shadow:0 20px 54px color-mix(in srgb,var(--accent) 28%,transparent)}
+    .btn.ghost{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.04)}
+    .btn.ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,.08)}
+
+    .hero-card{position:relative;isolation:isolate}
+    .portrait-shell{
+      position:relative;border-radius:42px;overflow:hidden;
+      background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      padding:12px;
+      box-shadow:var(--shadow);
+    }
+    .portrait-shell::before{
+      content:"";position:absolute;inset:-30%;z-index:-1;
+      background:conic-gradient(from 90deg,var(--accent),transparent,var(--accent-2),transparent,var(--accent));
+      animation:spin 18s linear infinite;opacity:.55;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .portrait-inner{border-radius:32px;overflow:hidden;background:var(--panel-2);aspect-ratio:4/5;position:relative}
+    .portrait-inner img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.03)}
+    .portrait-badge{
+      position:absolute;left:20px;right:20px;bottom:20px;
+      border:1px solid var(--line);border-radius:24px;padding:16px 18px;
+      background:color-mix(in srgb,var(--panel) 78%,transparent);backdrop-filter:blur(18px);
+      display:flex;justify-content:space-between;gap:18px;align-items:center;
+    }
+    .portrait-badge strong{display:block;font-size:.95rem}
+    .portrait-badge span{color:var(--muted);font-size:.82rem}
+    .signal{display:flex;gap:5px;align-items:flex-end;height:24px}
+    .signal i{display:block;width:5px;border-radius:99px;background:var(--accent)}
+    .signal i:nth-child(1){height:9px}.signal i:nth-child(2){height:16px}.signal i:nth-child(3){height:23px;background:var(--accent-2)}
+
+    .floating-card{
+      position:absolute;border:1px solid var(--line);border-radius:22px;background:color-mix(in srgb,var(--panel) 76%,transparent);
+      backdrop-filter:blur(18px);padding:16px 18px;box-shadow:0 20px 50px rgba(0,0,0,.22);
+      animation:float 4.4s ease-in-out infinite;
+    }
+    .floating-card.one{top:36px;left:-35px}.floating-card.two{right:-28px;bottom:120px;animation-delay:1.4s}
+    .floating-card small{display:block;color:var(--muted);font-weight:700}.floating-card b{font-size:1.5rem;letter-spacing:-.04em}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+    .section-pad{padding:105px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:38px}
+    .section-label{color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;margin-bottom:12px;display:block}
+    h2{font-size:clamp(2.5rem,5.8vw,5.6rem);line-height:.92;letter-spacing:-.06em;font-weight:900;max-width:780px}
+    .section-lede{color:var(--muted);font-size:1.05rem;line-height:1.65;max-width:470px}
+
+    .panel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .impact-card{
+      min-height:300px;border:1px solid var(--line);border-radius:var(--radius);padding:28px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+      box-shadow:0 18px 60px rgba(0,0,0,.12);position:relative;overflow:hidden;transition:.28s ease;
+    }
+    .impact-card::after{content:"";position:absolute;right:-70px;top:-70px;width:160px;height:160px;border-radius:50%;background:color-mix(in srgb,var(--accent) 22%,transparent);filter:blur(8px);transition:.28s ease}
+    .impact-card:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--accent) 46%,var(--line))}
+    .impact-card:hover::after{transform:scale(1.2);background:color-mix(in srgb,var(--accent-2) 24%,transparent)}
+    .card-num{display:block;color:var(--accent);font-weight:900;margin-bottom:50px}
+    .impact-card h3{font-size:1.55rem;line-height:1.02;letter-spacing:-.03em;margin-bottom:14px;position:relative;z-index:1}
+    .impact-card p{color:var(--muted);line-height:1.55;position:relative;z-index:1}
+
+    .feature{
+      border:1px solid var(--line);border-radius:36px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+      padding:42px;display:grid;grid-template-columns:.85fr 1.15fr;gap:45px;align-items:center;box-shadow:var(--shadow);
+    }
+    .feature h3{font-size:clamp(2.2rem,4.4vw,4.6rem);line-height:.9;letter-spacing:-.06em;margin-bottom:18px}
+    .feature p{color:var(--muted);line-height:1.68;font-size:1.08rem;margin-bottom:22px}
+    .feature-media{min-height:350px;border-radius:28px;border:1px solid var(--line);background:
+      radial-gradient(circle at 24% 25%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 27%),
+      radial-gradient(circle at 80% 70%,color-mix(in srgb,var(--accent-2) 28%,transparent),transparent 30%),
+      linear-gradient(145deg,var(--panel),var(--panel-2));position:relative;overflow:hidden;display:grid;place-items:center}
+    .orbital{width:220px;height:220px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;position:relative}
+    .orbital::before,.orbital::after{content:"";position:absolute;border:1px solid var(--line);border-radius:50%}
+    .orbital::before{inset:28px}.orbital::after{inset:-38px;border-style:dashed;animation:spin 22s linear infinite}
+    .orbital span{font-size:3rem;font-weight:900;color:var(--accent)}
+
+    .timeline{border-top:1px solid var(--line)}
+    .role-row{display:grid;grid-template-columns:1.1fr 1fr .55fr;gap:18px;padding:28px 0;border-bottom:1px solid var(--line);align-items:center;transition:.25s ease}
+    .role-row:hover{padding-left:14px;background:linear-gradient(90deg,rgba(255,255,255,.045),transparent)}
+    .role-row h3{font-size:clamp(1.3rem,2vw,2rem);letter-spacing:-.035em}
+    .role-row p{color:var(--muted);line-height:1.45}
+    .pill{justify-self:end;border:1px solid var(--line);border-radius:999px;color:var(--accent);font-weight:900;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;background:rgba(255,255,255,.04)}
+
+    .contact-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:stretch}
+    .contact-card{border:1px solid var(--line);border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));padding:34px;box-shadow:var(--shadow)}
+    .contact-card p{color:var(--muted);line-height:1.7;margin-top:14px}
+    .link-stack{display:grid;gap:12px;margin-top:26px}
+    .contact-link{display:flex;justify-content:space-between;align-items:center;gap:18px;border:1px solid var(--line);border-radius:20px;padding:17px 18px;background:rgba(255,255,255,.04);font-weight:900;transition:.25s ease}
+    .contact-link:hover{border-color:var(--accent);color:var(--accent);transform:translateX(4px)}
+    form{display:grid;gap:14px}
+    label{font-size:.78rem;font-weight:900;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;display:block}
+    input,textarea{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:18px;color:var(--text);padding:16px 17px;outline:none;transition:.22s ease}
+    textarea{min-height:128px;resize:vertical}
+    input:focus,textarea:focus{border-color:var(--accent);background:rgba(255,255,255,.08);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+    .status{min-height:22px;color:var(--accent);font-weight:800;font-size:.92rem}
+
+    .footer{padding:34px 0 50px;color:var(--muted)}
+    .footer-row{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid var(--line);padding-top:24px;flex-wrap:wrap}
+    .footer small{font-weight:700}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:none}
+
+    @media (max-width:980px){
+      .hero-grid,.feature,.contact-wrap{grid-template-columns:1fr}
+      .hero-card{max-width:560px;margin-inline:auto;width:100%}
+      .panel-grid{grid-template-columns:1fr}
+      .section-head{display:block}.section-lede{margin-top:18px}
+      .role-row{grid-template-columns:1fr}.pill{justify-self:start}
+    }
+
+    @media (max-width:760px){
+      .nav{border-radius:28px;align-items:flex-start;flex-wrap:wrap}
+      .menu-btn{display:inline-flex}
+      .nav-links{display:none;order:3;width:100%;grid-template-columns:1fr;gap:4px;padding-top:10px;border-top:1px solid var(--line)}
+      .nav.open .nav-links{display:grid}
+      .theme-switcher{border-left:0;padding-left:0;margin-left:auto}
+      .hero{padding-top:122px}.floating-card{display:none}
+      h1{font-size:clamp(3.35rem,16vw,5rem)}
+      .section-pad{padding:76px 0}.feature,.contact-card{padding:26px;border-radius:26px}
+      .portrait-badge{position:static;margin:12px 0 0}.portrait-inner{aspect-ratio:4/4.7}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+    }
+  </style>
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
 
-<div class="leather-fixed"></div>
-<div class="leather-tint"></div>
+  <nav class="nav" id="siteNav" aria-label="Primary navigation">
+    <a class="brand" href="#home" aria-label="Piya Ratna home">
+      <span class="brand-mark">PR</span>
+      <span>Piya Ratna</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#impact">Impact</a>
+      <a href="#work">Work</a>
+      <a href="#roles">Roles</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="theme-switcher" aria-label="Theme selector">
+      <button class="theme-dot obsidian" data-theme="obsidian" aria-label="Obsidian theme" aria-pressed="true"></button>
+      <button class="theme-dot sand" data-theme="sand" aria-label="Sand theme" aria-pressed="false"></button>
+      <button class="theme-dot royal" data-theme="royal" aria-label="Royal theme" aria-pressed="false"></button>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
+  </nav>
 
-<nav class="pill-nav">
-  <span class="pill-brand">Piya Ratna</span>
-  <div class="pill-links">
-    <a href="#work">Work</a>
-    <a href="#roles">Roles</a>
-    <a href="#contact">Contact</a>
-  </div>
-  <div class="theme-dots" id="themeDots">
-    <button class="theme-dot t-cream" data-theme="cream" aria-label="Cream theme"></button>
-    <button class="theme-dot t-green" data-theme="green" aria-label="Green theme"></button>
-    <button class="theme-dot t-dark" data-theme="dark" data-active="true" aria-label="Dark theme"></button>
-  </div>
-</nav>
-
-<main>
-
-  <section class="panel" id="panel-1" style="z-index:1;">
-    <div class="panel-bg"></div>
-    <div class="panel-inner">
-      <div class="hero-split">
-        <div class="rise">
-          <div class="hero-photo-wrap">
-            <img src="profile.jpg" alt="Portrait of Dr. Piya Ratna"
-                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'photo-fallback',textContent:'Add profile.jpg to this folder'}))">
-          </div>
-        </div>
-        <div class="hero-copy rise rise-d1">
-          <span class="eyebrow">Global Youth Leader &amp; Peace Ambassador</span>
-          <h1 class="hero-name">Piya<br>Ratna.</h1>
-          <p class="hero-tagline">Transforming societies through youth empowerment, global peace initiatives, and sustainable development.</p>
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="kicker">Global Youth Leader & Peace Ambassador</span>
+          <h1>Dr. <span class="gradient-text">Piya</span><br />Ratna.</h1>
+          <p class="hero-copy">A modern portfolio for youth empowerment, peacebuilding, sustainable development, and civic leadership. Built to feel premium, credible, fast, and ready for public presentation.</p>
           <div class="hero-actions">
-            <a href="#contact" class="btn btn-solid">Get in touch ↗</a>
-            <a href="#roles" class="btn btn-outline">Leadership record</a>
+            <a class="btn primary" href="#contact">Collaborate ↗</a>
+            <a class="btn ghost" href="#roles">View leadership record</a>
+          </div>
+        </div>
+
+        <div class="hero-card reveal">
+          <div class="floating-card one"><small>Leadership</small><b>3 tracks</b></div>
+          <div class="floating-card two"><small>Focus</small><b>Peace + Youth</b></div>
+          <div class="portrait-shell">
+            <div class="portrait-inner">
+              <img src="profile.jpg" alt="Portrait of Dr. Piya Ratna" onerror="this.replaceWith(Object.assign(document.createElement('span'),{style:'display:grid;place-items:center;height:100%;color:var(--muted);font-weight:800;text-align:center;padding:24px',textContent:'Add profile.jpg to this folder'}))" />
+              <div class="portrait-badge">
+                <div><strong>Leadership with purpose</strong><span>Community, dialogue, development</span></div>
+                <div class="signal" aria-hidden="true"><i></i><i></i><i></i></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="scroll-cue"><span>Scroll</span><span class="bar"></span></div>
-  </section>
+    </section>
 
-  <section class="panel" id="panel-2" style="z-index:2;">
-    <div class="panel-divider"></div>
-    <div class="panel-bg"></div>
-    <div class="panel-inner" id="work">
-      <div class="work-grid">
-        <div class="rise">
-          <span class="panel-label">Organization</span>
-          <h2 class="panel-title">Track<br>Nepal.</h2>
-          <span class="work-tag">President &amp; Core Visionary</span>
+    <section class="section-pad" id="impact">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="section-label">Impact areas</span>
+            <h2>Work that moves from dialogue to action.</h2>
+          </div>
+          <p class="section-lede">The portfolio is structured around clear public-facing themes: youth leadership, peace and dialogue, and sustainable development.</p>
         </div>
-        <div class="rise rise-d1">
-          <p class="panel-body" style="margin-bottom:28px;">Championing community service, international volunteer service, and sustainable development. Under his leadership, Track Nepal spearheads the economic empowerment of rural women, children's development programs, and public health drives.</p>
-          <a href="https://tracknepal.org.np/" target="_blank" rel="noopener" class="btn btn-outline">Visit tracknepal.org.np ↗</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-3" style="z-index:3;">
-    <div class="panel-divider"></div>
-    <div class="panel-bg"></div>
-    <div class="panel-inner">
-      <span class="panel-label rise">Focus</span>
-      <h2 class="panel-title rise rise-d1">What drives<br>the work.</h2>
-      <div class="focus-grid rise rise-d2">
-        <div class="focus-card">
-          <span class="focus-num">01</span>
-          <h4>Youth Empowerment</h4>
-          <p>Building leadership pipelines so young people lead initiatives, not just attend them.</p>
-        </div>
-        <div class="focus-card">
-          <span class="focus-num">02</span>
-          <h4>Peace &amp; Dialogue</h4>
-          <p>Convening cross-border conversation where conflict has been the default.</p>
-        </div>
-        <div class="focus-card">
-          <span class="focus-num">03</span>
-          <h4>Sustainable Development</h4>
-          <p>Programs designed to outlast any single grant cycle.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-4" style="z-index:4;">
-    <div class="panel-divider"></div>
-    <div class="panel-bg"></div>
-    <div class="panel-inner" id="roles">
-      <span class="panel-label rise">Roles</span>
-      <h2 class="panel-title rise rise-d1">Leadership<br>record.</h2>
-      <div class="rise rise-d2">
-        <div class="role-row">
-          <h3 class="role-org">International Youth Society</h3>
-          <p class="role-title">Global President, Nepal Chapter</p>
-          <p class="role-period">CURRENT</p>
-        </div>
-        <div class="role-row">
-          <h3 class="role-org">EPCC Global</h3>
-          <p class="role-title">Director of Cross-Border Relations</p>
-          <p class="role-period">CURRENT</p>
-        </div>
-        <div class="role-row">
-          <h3 class="role-org">Peace Journalism Forum</h3>
-          <p class="role-title">Co-Organizer &amp; Core Advocate</p>
-          <p class="role-period">CURRENT</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" id="panel-5" style="z-index:5;">
-    <div class="panel-divider"></div>
-    <div class="panel-bg"></div>
-    <div class="panel-inner" id="contact">
-      <div class="contact-grid">
-        <div class="rise">
-          <span class="panel-label">Contact</span>
-          <h2 class="panel-title">Let's<br>connect.</h2>
-          <p class="panel-body">Open for collaborations, speaking engagements, and global projects in youth leadership and peacebuilding.</p>
-        </div>
-        <div class="rise rise-d1">
-          <form id="contactForm">
-            <div class="field">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" placeholder="Your full name" required>
-            </div>
-            <div class="field">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="you@example.com" required>
-            </div>
-            <div class="field">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="4" placeholder="Tell me about your project or inquiry..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-solid" id="submitBtn" style="border:none; cursor:pointer; width:100%;">Send message ↗</button>
-            <p class="form-status" id="formStatus"></p>
-          </form>
-        </div>
-      </div>
-      <div class="footer-row">
-        <div>
-          <p>© 2026 Dr. Piya Ratna.</p>
-        </div>
-        <div class="footer-links">
-          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="#" target="_blank" rel="noopener">Twitter</a>
-          <a href="#" target="_blank" rel="noopener">Facebook</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<script>
-(function(){
-
-  /* Theme toggle */
-  function initTheme(){
-    var dots = document.querySelectorAll('.theme-dot');
-    var html = document.documentElement;
-    var saved = null;
-    try { saved = localStorage.getItem('site-theme'); } catch(e){}
-
-    if (saved){
-      html.setAttribute('data-theme', saved);
-      dots.forEach(function(d){
-        d.setAttribute('data-active', d.getAttribute('data-theme') === saved ? 'true' : 'false');
-      });
-    }
-
-    dots.forEach(function(dot){
-      dot.addEventListener('click', function(){
-        var theme = dot.getAttribute('data-theme');
-        html.setAttribute('data-theme', theme); 
-        try { localStorage.setItem('site-theme', theme); } catch(e){}
-        
-        dots.forEach(function(d){
-          d.setAttribute('data-active', d === dot ? 'true' : 'false');
-        });
-      });
-    });
-  }
-
-  /* Contact form */
-  function initForm(){
-    var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
-    var form = document.getElementById('contactForm');
+        <div class="panel-grid">
+          <article class="impact-card reveal">
+            <span class="card-num">01</span>
+            <h3>Youth Empowerment</h3>
+            <p>Building leadership pipelines where young people are positioned as active contributors, organizers, and changemakers.</p>
+          </article>
+          <article class="impact-card reveal">
+            <span class="card-num">02</span>
+            <h3>Peace & Dialogue</h3>
+            <p>Creating space for constructive conversation, 
